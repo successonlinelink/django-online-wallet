@@ -1,0 +1,107 @@
+{% extends 'partials/base.html' %} 
+{% load static %} 
+
+{% block content %}
+
+    <!-- side bar start -->
+    <div class="offcanvas sidebar-offcanvas offcanvas-start" tabindex="-1" id="offcanvasLeft">
+        {% include 'home_i/sidebar.html' %}
+    </div>
+    <!-- side bar end -->
+
+    <!-- header start -->
+    {% include 'home_i/header.html' %}
+    <!-- header end -->
+
+    <!-- card start -->
+    {% include 'home_i/balance_area.html' %}
+    <!-- card end -->
+
+    <!-- service section starts -->
+    {% include 'home_i/services.html' %}  
+    <!-- service section end -->
+
+    <!-- Transaction section starts -->
+    {% include 'home_i/transactions.html' %}
+    <!-- Transaction section end -->
+
+    <!-- bill details section starts -->
+    <!-- include 'home_i/bills.html'  -->
+    <!-- bill details section starts -->
+
+    <!-- saving plans section starts -->
+    {% include 'home_i/savings.html' %}
+    <!-- saving plans section end -->
+
+    <!-- monthly statistics section starts -->
+     <!-- include 'home_i/monthly_statistics.html'  -->
+    <!-- monthly statistics section end -->
+
+    <!-- news-update section starts -->
+    <!-- include 'home_i/news.html'  -->
+    <!-- news-update section end -->
+
+    <!-- panel-space start -->
+    <section class="panel-space"></section>
+    <!-- panel-space end -->
+
+    <!-- bottom navbar start -->
+    {% include 'home_i/footer_nav.html' %}
+    <!-- bottom navbar end -->
+
+    <!-- add money modal start -->
+    <!-- <div class="modal add-money-modal fade" id="add-money" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Add Money</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="inputcard" class="form-label mb-2">From</label>
+                        <div class="d-flex gap-2">
+                            <select id="inputcard" class="form-select">
+                                <option selected="">**** **** **** 1566 - Saving a/c</option>
+                                <option>**** **** **** 1566 - Saving a/c</option>
+                                <option>**** **** **** 1566 - Saving a/c</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputamount" class="form-label mb-2">Amount</label>
+                        <div class="form-input">
+                            <input type="number" class="form-control" id="inputamount" />
+                        </div>
+                    </div>
+                    <a href="landing.html" class="btn theme-btn successfully w-100">Deposit</a>
+                </div>
+                <button type="button" class="btn close-btn" data-bs-dismiss="modal">
+                    <i class="icon" data-feather="x"></i>
+                </button>
+            </div>
+        </div>
+    </div> -->
+    <!-- add money modal end -->
+
+    <!-- paid modal starts -->
+    {% include 'modals/paid.html' %}
+    <!-- paid modal end -->
+
+    <!-- pwa install app popup start -->
+    <!-- <div class="offcanvas offcanvas-bottom addtohome-popup theme-offcanvas" tabindex="-1" id="offcanvas">
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <div class="offcanvas-body small">
+            <div class="app-info">
+                <img src="{% static 'assets/images/logo/48.png' %}" class="img-fluid" alt="" />
+                <div class="content">
+                    <h4>mPay App</h4>
+                    <a href="#">www.mPay-app.com</a>
+                </div>
+            </div>
+            <a href="#!" class="btn theme-btn install-app btn-inline home-screen-btn m-0" id="installapp">Add to Home Screen</a>
+        </div>
+    </div> -->
+    <!-- pwa install app popup start -->
+
+
+{% endblock content %}

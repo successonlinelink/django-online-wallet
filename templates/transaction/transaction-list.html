@@ -1,0 +1,204 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<header class="section-t-space">
+    <div class="custom-container">
+        <div class="header-panel">
+            <a href="{% url 'account:dashboard' %}" class="back-btn">
+                <i class="icon" data-feather="arrow-left"></i>
+            </a>
+            <h2>Transaction History</h2>
+
+            <!-- <div class="dropdown">
+                <a href="#" class="back-btn" role="button" data-bs-toggle="dropdown">
+                    <i class="icon" data-feather="settings"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Mute notification</a></li>
+                    <li><a class="dropdown-item" href="#">Mark all as read</a></li>
+                    <li><a class="dropdown-item" href="#">Remove all</a></li>
+                </ul>
+            </div> -->
+        </div>
+    </div>
+</header>
+
+<section class="section-b-space">
+    <div class="custom-container">
+        <div class=" ">
+            
+            {% if all_transactions %}
+                {% for t in all_transactions %}
+                    <!-- ==========================================================
+                    LOOPING THROUGH ALL TRANSACTIONS
+                    "t" = a single transaction object from all_transactions
+                    ========================================================== -->
+                    <div class="p-2 mb-2" style="border: 1px solid rgb(210, 207, 207); border-radius: 5px;">
+                        <!-- Link to open the full transaction detail page -->
+                        <a href="{% url 'core:transaction-detail' t.transaction_id %}" class="transaction-main-link">
+
+                            <!-- ===========================
+                                This Guy will check and give me the name of the receiver or sender based on the transaction
+                            =========================== -->
+                            <div>
+                                <h5 class="fw-semibold dark-text">
+                                    {% if t.transaction_type == "transfer" %}
+                                    <!-- ------------------------------
+                                        CASE 1: A Transfer Transaction
+                                    ------------------------------ -->
+                                        {% if t.sender == request.user %}
+                                        <!-- User SENT money to someone -->
+                                        Transfer to ({{ t.reciever.kyc.full_name|default:'No KYC'|title }})
+                                        {% else %}
+                                        <!-- User RECEIVED money -->
+                                        Transfer from ({{ t.sender.kyc.full_name|default:'No KYC'|title }})
+                                        {% endif %}
+
+                                    {% elif t.transaction_type == "request" %}
+                                    <!-- ------------------------------
+                                        CASE 2: A Money Request
+                                    ------------------------------ -->
+                                        {% if t.sender == request.user %}
+                                        <!-- User SENT a money request -->
+                                        Request sent to ({{ t.reciever.kyc.full_name|default:'No KYC'|title }})
+                                        {% else %}
+                                        <!-- User RECEIVED a money request -->
+                                        Request from ({{ t.sender.kyc.full_name|default:'No KYC'|title }})
+                                        {% endif %}
+                                    {% endif %}
+                                </h5>
+
+                                <div class="transaction-meta">
+                                    <!-- ===================================
+                                        This Guy will check and give me the transaction type
+                                    =================================== -->
+                                    <h6 class="fw-normal light-text mt-1">
+                                        {% if t.sender == request.user and t.transaction_type == "transfer" %}
+                                        <!-- User SENT money = Debit -->
+                                            <span class="text-danger">Transfer | Debit</span>
+
+                                        {% elif t.reciever == request.user and t.transaction_type == "transfer" %}
+                                        <!-- User RECEIVED money -->
+                                            <span class="text-success">Transfer | Received</span>
+
+                                        {% elif t.transaction_type == "request" %}
+                                        <!-- Money request -->
+                                            <span class="text-info">Request</span>
+                                        {% endif %}
+                                    </h6>
+
+                                    <!-- ===================================
+                                        DATE AND TIME OF TRANSACTION
+                                        E.g. "04:22 | 12 Feb, 2025"
+                                    =================================== -->
+                                    <h6 class="time fw-normal light-text mt-1">
+                                        <small>{{ t.date|date:"h:i" }}</small> | {{ t.date|date:"d M, Y" }}
+                                    </h6>
+                                </div>
+                            </div>
+
+                            
+
+                            <!-- ===========================
+                                BOTTOM SECTION:
+                                - Status
+                                - Amount
+                                - Request Actions (Settle/Delete)
+                            =========================== -->
+                            <div class="mt-3">
+                                <div class="transaction-status-amount">
+                                    <!-- ==========================
+                                        This Guy will check and give me the transaction status
+                                    ========================== -->
+                                    {% if t.status == 'completed' %}
+                                        <p class="fw-semibold text-success">{{ t.status|title }}</p>
+
+                                    {% elif t.status == 'processing' or t.status == 'request_processing' %}
+                                        <p class="fw-semibold text-warning">{{ t.status|title }}</p>
+
+                                    {% elif t.status == 'failed' %}
+                                        <p class="fw-semibold text-danger">{{ t.status|title }}</p>
+
+                                    {% elif t.status == 'request_sent' %}
+                                        <p class="fw-semibold text-primary">Request Sent</p>
+
+                                    {% elif t.status == 'request_settled' %}
+                                        <p class="fw-semibold text-success">Settled </p>
+                                    {% endif %}
+
+                                    <!-- ==========================
+                                        AMOUNT (formatted with comma)
+                                    ========================== -->
+                                    <span class="dark-text amount-display">
+                                        ${{ t.amount|intcomma }}
+                                    </span>
+                                </div>
+
+                                <!-- ======================================
+                                    EXTRA ACTION BUTTONS FOR REQUESTS ONLY
+                                    - If user sent the request → View/Delete
+                                    - If user received the request → Settle/View
+                                ====================================== -->
+                                {% if t.transaction_type == "request" %}
+                                    <div class="request-actions">
+                                        <ul class="element-list">
+
+                                            {% if t.sender == request.user %}
+                                                <!-- User SENT the request -->
+                                                {% if t.status == 'request_sent' %}
+
+                                                    <li>
+                                                        <a href="{% url 'core:transaction-detail' t.transaction_id %}" class="btn theme-btn  p-1 btn-sm">View Request</a>
+                                                        <a href=" " class="btn gray-btn  p-1 btn-sm">Delete Request</a>                                                    
+                                                    </li>
+                                                {% endif %}
+
+                                            {% else %}
+                                                <!-- User RECEIVED the request -->
+                                                {% if t.status == 'request_sent' %}
+                                                        <li>
+                                                            <a href="{% url 'core:settlement-confirmation' t.sender.account.account_number t.transaction_id %}" class="btn theme-btn  p-1 btn-sm">Settle</a>
+                                                            <a href="{% url 'core:transaction-detail' t.transaction_id %}" class="btn gray-btn  p-1 btn-sm">View Request</a>                                                    
+                                                        </li>
+            
+                                                {% endif %}
+                                            {% endif %}
+
+                                        </ul>
+
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            
+            {% else %}
+                <!-- pay-successfully section starts -->
+                <section class="section-b-space">
+                    <div class="custom-container">
+                        <div class="empty-page">
+                            <img
+                                class="notification-img"
+                                class="img-fluid"
+                                src="{% static 'assets/images/svg/notification.svg' %}"
+                                alt="notification"
+                            />
+                            <h3 class="d-block fw-normal dark-text text-center mt-3">
+                                You don't have any transaction history.
+                            </h3>
+                        </div>
+                    </div>
+                </section>
+                <!-- pay-successfully section end -->
+            {% endif %}
+            
+
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

@@ -1,0 +1,148 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+    <!-- header start -->
+    <header class="section-t-space">
+        <div class="custom-container">
+            <div class="header-panel">
+                <a href="{{ request.META.HTTP_REFERER|default:'account:dashboard' }}" class="back-btn">
+                    <i class="icon" data-feather="arrow-left"></i>
+                </a>
+                <h2>Loan Details</h2>
+            </div>
+        </div>
+    </header>
+    <!-- header end -->
+
+    <div class="container py-4">
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <h4 class="fw-bold">Loan Details</h4>
+            <hr>
+
+            <!-- Loan Header -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <p><strong>Loan ID:</strong> {{ loan.loan_id }}</p>
+                    <p><strong>Status:</strong> 
+                        {% if loan.status == "approved" %}
+                            <span class="badge bg-success">Approved</span>
+                        {% elif loan.status == "under_review" %}
+                            <span class="badge bg-warning text-dark">Under Review</span>
+                        {% elif loan.status == "rejected" %}
+                            <span class="badge bg-danger">Rejected</span>
+                        {% elif loan.status == "disbursed" %}
+                            <span class="badge bg-info">Disbursed</span>
+                        {% else %}
+                            <span class="badge bg-secondary">{{ loan.status }}</span>
+                        {% endif %}
+                    </p>
+                </div>
+
+                <div class="col-md-6">
+                    <p><strong>Date Requested:</strong> {{ loan.date_requested|date:"M d, Y - h:i A" }}</p>
+                    {% if loan.date_disbursed %}
+                        <p><strong>Date Disbursed:</strong> {{ loan.date_disbursed|date:"M d, Y - h:i A" }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- Loan Amounts -->
+            <h5 class="fw-bold">Loan Breakdown</h5>
+
+            <div class="row mt-3">
+                <div class="col-md-4 mb-3">
+                    <div class="p-3 border rounded bg-light">
+                        <p class="text-muted mb-1">Amount Requested</p>
+                        <h5 class="fw-bold">₦{{ loan.amount_requested|floatformat:2|intcomma }}</h5>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <div class="p-3 border rounded bg-light">
+                        <p class="text-muted mb-1">Interest Rate</p>
+                        <h5 class="fw-bold">{{ loan.interest_rate }}%</h5>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <div class="p-3 border rounded bg-light">
+                        <p class="text-muted mb-1">Total Payable</p>
+                        <h5 class="fw-bold">₦{{ loan.total_payable|floatformat:2|intcomma }}</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-6 mb-3">
+                    <div class="p-3 border rounded bg-light">
+                        <p class="text-muted mb-1">Amount Disbursed</p>
+                        <h5 class="fw-bold">₦{{ loan.amount_disbursed|floatformat:2|intcomma }}</h5>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="p-3 border rounded bg-light">
+                        <p class="text-muted mb-1">Duration</p>
+                        <h5 class="fw-bold">{{ loan.duration_months }} Month(s)</h5>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- Loan Purpose -->
+            <h5 class="fw-bold">Loan Purpose</h5>
+            <div class="p-3 border rounded bg-light mb-4">
+                {% if loan.purpose %}
+                    <p class="mb-0">{{ loan.purpose }}</p>
+                {% else %}
+                    <p class="text-muted mb-0">No purpose provided.</p>
+                {% endif %}
+            </div>
+
+            <hr>
+
+            <!-- Repayments -->
+            <h5 class="fw-bold">Repayment History</h5>
+
+            {% if repayments %}
+                <div class="table-responsive mt-3">
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Amount Paid</th>
+                                <th>Date Paid</th>
+                                <th>Method</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in repayments %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>₦{{ r.amount|floatformat:2|intcomma }}</td>
+                                    <td>{{ r.date_paid|date:"M d, Y - h:i A" }}</td>
+                                    <td>{{ r.payment_method }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted mt-2">No repayments made yet.</p>
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}

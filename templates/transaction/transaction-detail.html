@@ -1,0 +1,83 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<!-- header start -->
+<header class="section-t-space mb-4">
+    <div class="custom-container">
+        <div class="header-panel">
+            <a href="{{ request.META.HTTP_REFERER|default:'account:dashboard' }}" class="back-btn">
+                <i class="icon" data-feather="arrow-left"></i>
+            </a>
+            <h2>Transaction Detail</h2>
+        </div>
+    </div>
+    <hr>
+</header>
+<!-- header end -->
+
+<section class="section-b-space">
+    <div class="custom-container">
+        <div class="row gy-3">
+            <div class="col-12">
+                <div class="p-2 mb-2" style="border: 1px solid rgb(210, 207, 207); border-radius: 5px;">
+                    <div class="gap-3">
+                        <div class="news-update-content">
+
+                            <div class="news-writer mb-2 d-flex justify-content-between">
+                                <h6>Amount:</h6>
+                                <h6>${{transaction.amount|intcomma}}</h6>
+                            </div>
+
+                            <div class="news-writer mb-2 d-flex justify-content-between">
+                                <h6>Id:</h6>
+                                <h6 class="text-uppercase text-muted">{{transaction.transaction_id}}</h6>
+                            </div>
+
+                            <div class="news-writer mb-2 d-flex justify-content-between">
+                                <h6>Date:</h6>
+                                <h6>{{transaction.date}}</h6>
+                            </div>
+
+                            <div class="news-writer mb-2 d-flex justify-content-between">
+                                <h6>Status</h6>
+                                
+                                {% if transaction.status == 'completed' %}
+                                    <h6 class="text-success"> {{transaction.status|title}} </h6>
+                                {% endif %}
+
+                                {% if transaction.status == 'failed' %}
+                                    <h6 class="text-danger"> {{transaction.status|title}} </h6>
+                                {% endif %}
+
+                                {% if transaction.status == 'processing' %}
+                                    <h6 class="text-warning"> {{transaction.status|title}} </h6>
+                                {% endif %}
+
+                                {% if transaction.status == 'request_sent' %}
+                                    <p class="fw-semibold text-primary">Request Sent</p>
+                                {% endif %}
+
+                                {% if transaction.status == 'request_settled' %}
+                                    <p class="fw-semibold text-success">Settled</p>
+                                {% endif %}
+                                    
+                            </div>
+
+                            <div class="">
+                                <h6 class="text-center text-decoration-underline">Description</h6>
+                                <h3 class="text-center" style="color: rgb(75, 75, 75);">{{transaction.description}}</h3>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

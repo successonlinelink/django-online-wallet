@@ -1,0 +1,120 @@
+{% extends 'partials/base.html' %} 
+{% load static %} 
+{% load humanize %}
+
+{% block content %}
+
+    <!-- bottom navbar start -->
+    {% include 'home_i/footer_nav.html' %}
+    <!-- bottom navbar end -->
+
+    <!-- header start -->
+    <header class="section-t-space">
+        <div class="custom-container">
+            <div class="header-panel">
+                <a href="{{ request.META.HTTP_REFERER|default:'account:dashboard' }}" class="back-btn">
+                    <i class="icon" data-feather="arrow-left"></i>
+                </a>
+                <h2>Goal Details</h2>
+
+                <a href="#add-money" class="back-btn" data-bs-toggle="modal">
+                    <i class="icon" data-feather="plus"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+    <!-- header end -->
+
+    <!-- news-update-details section starts -->
+    <section class="section-b-space">
+        <div class="custom-container">
+            <div class="news-details">
+                <img class="img-fluid news-img w-100" src="{{goal.image.url}}" alt="img1" />
+                <div class="news-content">
+                    <h2>{{goal.title}}</h2>
+
+                    <div style="margin-top: -15px;" class="d-flex justify-content-center gap-4">
+                        
+                        <a href="{% url 'core:delete-goal' goal.gid %}" class="btn btn-xs btn-danger">Delete Goal</a>
+                        
+                        {% if goal.is_completed == False %}
+                            <button class="btn btn-xs btn-warning" type="button">In Progress {{ goal.progress_percentage|floatformat:2 }}%</button>
+                        {% else  %}
+                            <button class="btn btn-xs btn-success" type="button">Goal Status: Archieved 🎉 </button>
+                        {% endif %}
+
+                        <a href="#add-money" class="btn btn-xs btn-success" data-bs-toggle="modal">
+                            <!-- <i class="icon" data-feather="plus"></i> -->
+                            + Fund Goal
+                        </a>
+
+                            
+                    </div>
+
+                    <style>
+                    .btn-xs {
+                        padding: 0.25rem 0.5rem;
+                        font-size: 0.75rem;
+                        line-height: 1.2;
+                        border-radius: 0.2rem;
+                    }
+                    </style>
+
+                    <hr>
+
+                    <h5>Date: {{goal.created_at|date:"d M, Y"}} | Dead Line: <span style="color: blueviolet;">{{goal.deadline}}</span></h5>
+
+                    <h5>Target Amount: <span style="color: blueviolet;">${{goal.target_amount}}</span> | Currently: <span style="color: blueviolet;">${{goal.current_amount}}</span></h5>
+
+                    <h5>Goal Type: <span style="color: blueviolet;">{{goal.goal_type}}</span></h5>
+
+                    <div class="news-description">
+                        <h5>Goal Description:</h5>
+                        <p>{{goal.description}}</p>
+
+                        <div class="investment-banner">
+                            <div class="investment-content">
+                                <h5>How to earn more cash so you may invest more</h5>
+                                <h6>Earn 50% with this investment.</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- news-update-details section end -->
+
+    <!-- add money modal start -->
+    <div class="modal add-money-modal fade" id="add-money" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <form method="POST" action="{% url 'core:fund-goal' goal.gid %}" class="modal-content">
+                {% csrf_token %}
+
+                <div class="modal-header">
+                    <h2 class="modal-title" style=" font-size: 17px;">Add Funds to your <span style="color: blueviolet;">{{ goal.goal_type }}</span> Goal</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="inputcard" class="form-label mb-2"> Account Balance</label>
+                        <div class="d-flex gap-2">
+                            <input type="text" value="${{ user.account.account_balance|intcomma }}" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputamount" class="form-label mb-2">Amount</label>
+                        <div class="form-input">
+                            <input type="number" class="form-control" name="current_amount" placeholder="$0.00" />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn theme-btn successfully w-100">Add</button>
+                </div>
+                <button type="button" class="btn close-btn" data-bs-dismiss="modal">
+                    <i class="icon" data-feather="x"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    <!-- add money modal end -->
+
+{% endblock content %}

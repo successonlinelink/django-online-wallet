@@ -1,0 +1,100 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+    <!-- header start -->
+    <header class="section-t-space">
+        <div class="custom-container">
+            <div class="header-panel">
+                <a href="{% url 'account:dashboard' %}" class="back-btn">
+                    <i class="icon" data-feather="arrow-left"></i>
+                </a>
+                <h2>Loan History</h2>
+
+                <a href="{% url 'core:apply-loan' %}" class="back-btn">
+                    <i class="icon" data-feather="plus"></i>
+                </a>
+            </div>
+        </div>
+            <hr>
+    </header>
+    <!-- header end -->
+
+<!-- Buy & Sell history section starts -->
+<section>
+    <div class="custom-container">
+        <div class="title">
+            <h2 class="light-text fw-normal">1st January - 30nd June</h2>
+        </div>
+
+        <div class="row gy-3">
+            
+            {% if loans %}
+            
+                {% for loan in loans %}
+                
+                    <div class="col-12">
+                        <div class="transaction-box">
+                            <a href="{% url 'core:loan-detail' loan.loan_id %}" class="d-flex gap-3">
+                                <div class="transaction-image color1">
+                                    <img class="img-fluid icon" src="{% static 'assets/images/svg/bitcoins.svg' %}" alt="bitcoins" />
+                                </div>
+                                <div class="transaction-details">
+                                    <div class="transaction-name">
+                                        <h5>{{loan.purpose|truncatechars:17}}</h5>
+                                        <h3 class="dark-text">${{loan.amount_requested}}</h3>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="light-text">{{loan.duration_months}} Month(s)</h5>
+                                        
+                                        {% if loan.status == "under_review" %}
+                                            <h5 class="warning-color amount-count"> Under Review </h5>
+                                        {% elif loan.status == "approved" %}
+                                            <h5 class="primary-color amount-count"> Approved </h5>
+                                        {% elif loan.status == "rejected" %}
+                                            <h5 class="danger-color amount-count"> Rejected </h5>
+                                        {% elif loan.status == "disbursed" %}
+                                            <h5 class="success-color amount-count"> Disbursed </h5>
+                                        {% elif loan.status == "completed" %}
+                                            <h5 class="secondary-color amount-count"> Completed </h5>                                        
+                                        {% endif %}
+                                            
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    
+                {% endfor %}
+
+            {% else %}
+
+                <!-- pay-successfully section starts -->
+                <section class="section-b-space">
+                    <div class="custom-container">
+                        <div class="empty-page">
+                            <img
+                                class="notification-img"
+                                class="img-fluid"
+                                src="{% static 'assets/images/svg/notification.svg' %}"
+                                alt="notification"
+                            />
+                            <h3 class="d-block fw-normal dark-text text-center mt-3">
+                                You don't have any loan for now, apply now within minutes.
+                            </h3>
+                            <a href="{% url 'core:apply-loan' %}" class="btn theme-btn successfully w-100" data-bs-toggle="modal"> Create One </a>
+                        </div>
+                    </div>
+                </section>
+                <!-- pay-successfully section end -->
+
+            {% endif %}
+            
+        </div>
+    </div>
+</section>
+<!-- Transaction section end -->
+
+
+{% endblock content %}

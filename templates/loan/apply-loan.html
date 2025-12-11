@@ -1,0 +1,196 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+    <!-- bottom navbar start -->
+    {% include 'home_i/footer_nav.html' %}
+    <!-- bottom navbar end -->
+
+
+    <!-- header start -->
+    <header class="section-t-space">
+        <div class="custom-container">
+            <div class="header-panel">
+                <a href="{{ request.META.HTTP_REFERER|default:'account:dashboard' }}" class="back-btn">
+                    <i class="icon" data-feather="arrow-left"></i>
+                </a>
+                <h2>Send</h2>
+                <a href="#" class="back-btn">
+                    <i class="icon" data-feather="rotate-cw"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+    <!-- header end -->
+
+    <!-- crypto send starts -->
+    <section class="section-b-space">
+        <form method="POST" class="custom-container">
+            {% csrf_token %}
+
+            <div class="currency-transfer">
+                <div class="auth-form crypto-form mt-3" target="_blank">
+                    
+                    <div class="form-group">
+                        <label for="inputnote" class="form-label">Recipient Account Number</label>
+                        <div class="form-input">
+                            <input
+                                type="number"
+                                class="form-control"
+                                name="amount"
+                                id="inputname"
+                                value="{{user.account.account_number}}"
+                                readonly
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputname" class="form-label">Full Name</label>
+                        <div class="form-input">
+                            <input
+                                type="text"
+                                class="form-control"
+                                value="{{user.kyc.full_name|default:'No KYC'}}"
+                                id="inputname"
+                                readonly
+                            />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputname" class="form-label">Country</label>
+                        <div class="form-input">
+                            <input
+                                type="text"
+                                class="form-control"
+                                value="{{user.kyc.country}}"
+                                id="inputname"
+                                readonly
+                            />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputname" class="form-label">State</label>
+                        <div class="form-input">
+                            <input
+                                type="text"
+                                class="form-control"
+                                value="{{user.kyc.state}}"
+                                id="inputname"
+                                readonly
+                            />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputname" class="form-label">City</label>
+                        <div class="form-input">
+                            <input
+                                type="text"
+                                class="form-control"
+                                value="{{user.kyc.city}}"
+                                id="inputname"
+                                readonly
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputaddress" class="form-label">Mobile</label>
+                        <div class="form-input">
+                            <input
+                                type="text"
+                                class="form-control"
+                                value="{{user.kyc.mobile}}"
+                                id="inputaddress"
+                                readonly
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 auth-form crypto-form" target="_blank">
+
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label class="form-label mb-2">Duration (Months)</label>
+                            <div class="d-flex gap-2">
+                                <select id="inputcard" name="duration" class="form-select" required>
+                                    <option selected>Please Select Loan Duration</option>
+                                    <option value="1">1 Month</option>
+                                    <option value="3">3 Months</option>
+                                    <option value="6">6 Months</option>
+                                    <option value="12">12 Months</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="inputname" class="form-label">Loan Amount </label>
+                            <div class="form-input">
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    name="amount"
+                                    id="inputname"
+                                    placeholder="$0.00"
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between mt-2">
+                            <h5 class="light-text mb-0">Interest for every loan :</h5>
+                            <h5 class="theme-color fw-normal mb-0">%10</h5>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="inputnote" class="form-label">Note</label>
+                        <div class="form-input">
+                            <textarea name="purpose" placeholder="Loan Purpose" class="form-control" id="inputnote" rows="2" required></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="transfer-btn">
+                    <div class="custom-container">
+                        <button type="submit" class="btn theme-btn sub-btn w-100" data-bs-toggle="modal">Submit Loan Request</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+
+    <!-- crypto send end -->
+
+    <!-- panel-space start -->
+    <section class="panel-space"></section>
+    <!-- panel-space end -->
+
+    <!--successful send modal start -->
+    <div class="modal error-modal fade" id="send" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Successfully Send Asset</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="error-img">
+                        <img class="img-fluid" src="{% static 'assets/images/svg/done.svg' %}" alt="delate" />
+                    </div>
+                    <h3>Your digital asset has been submitted to Seema Williams successfully.</h3>
+                </div>
+                <button type="button" class="btn close-btn" data-bs-dismiss="modal">
+                    <i class="icon" data-feather="x"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- successful send modal end -->
+
+{% endblock content %}

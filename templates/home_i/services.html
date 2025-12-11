@@ -1,0 +1,46 @@
+{% load static %} 
+
+<!-- quick send section starts -->
+<section class="">
+    <div class="custom-container">
+        <div class="title">
+            <h2>Quick send to</h2>
+            <a href="{% url 'core:my-recipient' %}">See all</a>
+        </div>
+    </div>
+
+    <div class="quick-send" style="margin-left: 15px;">
+
+        <div class="profile">
+            <a href="{% url 'core:search-account' %}" class="profile new-profile">
+                <div class="new-image">
+                    <i class="icon" data-feather="plus"></i>
+                </div>
+            </a>
+        </div>
+
+        {% for r in recipients  %}
+
+            <div class="profile">
+                <a href="{% url 'core:amount-transfer' r.account.account_number  %}">
+
+                    {% if r.recipient_user.kyc.image %}
+                        <img class="img-fluid " src="{{r.recipient_user.kyc.image.url}}" width="40" alt="ava" style="border-radius: 40%;" />
+
+                    {% else %}
+                        <img class="img-fluid " src="{% static 'assets/avatar.png' %}" width="50" alt="ava" style="border-radius: 50%;" />
+                        
+                    {% endif %}   
+                    <h5 style="margin-left: -20px;">{{r.recipient_user.kyc.full_name|truncatechars:5|title|default:'No KYC'}}</h5>
+                </a>
+            </div>
+
+        {% empty %}
+
+            <p style="align-content: center;">You don't have any recipients yet.</p>
+            
+        {% endfor %}
+
+    </div>
+</section>
+<!-- quick send section end -->

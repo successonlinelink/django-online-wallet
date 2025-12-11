@@ -1,0 +1,100 @@
+{% extends 'partials/base.html' %} 
+{% load static %} 
+
+{% block content %}
+
+<!-- loading section start -->
+<div class="onboarding-loader" id="onboardingLoader">
+    <div class="rocket-img">
+        <img class="rocket" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="500" src="{% static 'assets/images/svg/rocket.svg' %}" alt="rocket" />
+    </div>
+    <div class="flash-img">
+        <img class="flash" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="800" src="{% static 'assets/images/svg/flash.svg' %}" alt="flash" />
+    </div>
+    <div class="logo-img">
+        <img class="img-fluid" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="1000" src="{% static 'assets/images/logo/logo-white.png' %}" alt="logo" />
+    </div>
+</div>
+<!-- loading section end -->
+
+<!-- onboarding section start -->
+<section class="onboarding-section highlight se" id="onboardingBody">
+    <div class="swiper onboarding">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <div class="poster-wapper">
+                    <div class="poster-box-chain" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="1700">
+                        <span class="left-chain"></span>
+                        <span class="right-chain"></span>
+                    </div>
+                    <div class="poster-box color1 box1" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="1700">
+                        <h2>MANAGE</h2>
+                        <img class="img-fluid top-line" src="{% static 'assets/images/svg/lines.svg' %}" alt="lines" />
+                    </div>
+                    <div class="poster-box color2 box2" data-aos="fade-right" data-aos-duration="2000" data-aos-delay="2000">
+                        <h2>YOUR</h2>
+                    </div>
+                    <div class="poster-box color1 box3" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="2500">
+                        <h2>FINANCE</h2>
+                    </div>
+                    <div class="poster-box color2 box4" data-aos="fade-up" data-aos-duration="3000" data-aos-delay="3000">
+                        <h2>WISELY</h2>
+                        <img class="img-fluid bottom-line" src="{% static 'assets/images/svg/lines-fill.svg' %}" alt="lines" />
+                    </div>
+                </div>
+
+                <div class="custom-container">
+                    <p>The best payment method connects your money to friends, family, brands, and experiences.</p>
+                    <div class="d-flex justify-content-between align-items-center pb-3">
+                        <a href="{% url 'account:dashboard' %}#" class="btn btn-link mt-0 p-0">Skip</a>
+
+                        <!-- <div class="onboarding-next">
+                            <a href=""> <img class="img-fluid arrow" src="{% static 'assets/images/svg/arrow-white.svg' %}" alt="arrow" /></a>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+<!-- 
+            <div class="swiper-slide">
+                <div class="poster-wapper">
+                    <div class="poster-box-chain poster-box-chain1" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="500">
+                        <span class="left-chain"></span>
+                        <span class="right-chain"></span>
+                    </div>
+                    <div class="poster-box poster-box1 color1 box1" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="500">
+                        <h3>Add your all account and manage</h3>
+                    </div>
+                    <div class="custom-container">
+                        <ul class="card-list">
+                            <li>
+                                <img class="img-fluid card-img card5" src="{% static 'assets/images/card/card5.png' %}" alt="card" />
+                            </li>
+                            <li>
+                                <img class="img-fluid card-img card4" src="{% static 'assets/images/card/card4.png' %}" alt="card" />
+                            </li>
+                            <li>
+                                <img class="img-fluid card-img card3" src="{% static 'assets/images/card/card3.png' %}" alt="card" />
+                            </li>
+                            <li>
+                                <img class="img-fluid card-img card2" src="{% static 'assets/images/card/card2.png' %}" alt="card" />
+                            </li>
+                            <li>
+                                <img class="img-fluid card-img card1" src="{% static 'assets/images/card/card1.png' %}" alt="card" />
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <p>Manage your finance in the app your money will safe here</p>
+                <div class="custom-container button-group">
+                    <a href="signin.html" class="btn theme-btn w-100">Sign in</a>
+                    <a href="signup.html" class="btn btn-link mt-3 pb-3">Sign up</a>
+                </div>
+            </div> -->
+            
+        </div>
+    </div>
+</section>
+<!-- onboarding section end -->
+
+
+{% endblock content %}

@@ -1,0 +1,168 @@
+{% extends 'partials/base.html' %} 
+{% load static %} 
+{% load humanize %}
+
+{% block content %}
+
+    <!-- bottom navbar start -->
+    {% include 'home_i/footer_nav.html' %}
+    <!-- bottom navbar end -->
+
+    <!-- header start -->
+<header class="section-t-space">
+    <div class="custom-container">
+        <div class="header-panel">
+            <a href="{{ request.META.HTTP_REFERER|default:'account:dashboard' }}" class="back-btn">
+                <i class="icon" data-feather="arrow-left"></i>
+            </a>
+            <h2>Transfer money to </h2>
+        </div>
+    </div>
+</header>
+<!-- header end -->
+
+<!-- transfer-list starts -->
+<section>
+    <ul class="transfer-list add-transfer-person">
+        <li class="w-100">
+            <div class="transfer-person transfer-box">
+                <div class="transfer-img">
+                    
+                    {% if account.kyc %}
+                        <img class="img-fluid icon" src="{{account.user.kyc.image.url}}" alt="p1" />
+                    
+                    {% else %}
+                        <img class="img-fluid " src="{% static 'assets/avatar.png' %}" width="100" alt="ava" />
+                        
+                    {% endif %}
+                        
+                </div>
+
+                <div class="transfer-details">
+                    <div>
+                        <h5 class="fw-semibold dark-text"> {{account.user.kyc.full_name|title|default:'No KYC'}} </h5>
+                        <h6 class="fw-normal light-text mt-2"> {{account.account_number}} </h6>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="icon dark-text" data-feather="more-vertical"></i>
+                        </a>
+
+                        <!-- <ul class="dropdown-menu">
+                            <li><a class="dropdown-item w-100" href=" url 'core:account-holders' ">Change person</a></li>
+                        </ul> -->
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</section>
+<!-- transfer-list end -->
+
+<p class="text-center mt-2">
+    Step 2 of 3
+</p>
+<!-- transfer details section start -->
+<section class="section-b-space">
+    <div class="custom-container">
+
+        <form class="auth-form p-0" method="POST" action="{% url 'core:amount-transfer-process' account.account_number  %}">
+            {% csrf_token %}
+
+            <div class="form-group mb-2">
+                <label for="inputcardnumber" class="form-label">Amount to Send</label>
+                <div class="form-input">
+                    <input type="number" class="form-control" onkeyup="CalculateBalance()" placeholder="{{request.user.account.account_balance|intcomma}}" name="amount-send" id="amount-send" required  />
+                </div>
+            </div>
+
+             <!-- Balance -->
+            <ul class="select-bank">
+                <li>
+                    <div class="balance-box active">
+                        <img class="img-fluid balance-box-img active" src="{% static 'assets/images/svg/balance-box-bg-active.svg' %}" alt="balance-box" />
+                        <img class="img-fluid balance-box-img unactive" src="{% static 'assets/images/svg/balance-box-bg.svg' %}" alt="balance-box" />
+                        <div class="balance-content">
+                            <h6>Balance</h6>
+                            <h3>${{request.user.account.account_balance|intcomma}}</h3>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <div>
+                <h3 id="new_balance"></h3>
+                <p class="text-danger" id="error-div"></p>
+            </div>
+
+            <script>
+                // ✅ Function to calculate and display the user's new balance after entering an amount to send
+                function CalculateBalance() {
+                    // ✅ Get the currently logged-in user's available balance (injected from Django)
+                    let available_balance = "{{ request.user.account.account_balance }}" // User's current balance from backend
+                    
+                    // ✅ Get references to HTML elements by their IDs
+                    let new_balance = document.getElementById("new_balance")       // Element to show new balance
+                    let sendAmount_input = document.getElementById("amount-send")  // Input field for amount user wants to send
+                    let sendAmount = sendAmount_input.value                        // Value entered by user (as string)
+                    let errorDiv = document.getElementById("error-div")            // Div for displaying errors (if any)
+                    let total_to_pay = document.getElementById("total-to-pay")     // Element to show total amount user will send
+                    let note = document.getElementById("note")     // Element to show total amount user will send
+
+
+                    // ✅ Create an empty array to store validation errors (currently unused)
+                    let errors = []
+
+                    // ✅ Calculate new balance (subtract the entered amount from available balance)
+                    new_bal = available_balance - sendAmount
+                    //console.log(new_bal) // Print result to console (for debugging)
+
+                    // ✅ Display the updated balance in a nicely formatted way with thousand separators
+                    // Example: "New Balance $4,523"
+                    new_balance.innerHTML = `New Balance: <b> $${new_bal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} </b>`;
+
+                    // ✅ Display the total amount user wants to send, formatted with commas
+                    total_to_pay.innerHTML = `USD <b> $${sendAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} </b>`;
+
+                    // ✅ If the new balance would be negative, show warning and highlight balance in red
+                    if (new_bal < 0) {
+                        new_balance.style.color = "red"  // Show red color to indicate problem
+                        // alert("You can only send $" + available_balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+                        note.innerHTML = `Note: You can only spend amount in your balance.`;
+
+                    } 
+                    // ✅ Otherwise, keep normal color (e.g., dark blue)
+                    else {
+                        new_balance.style.color = "#27276e"
+                    }
+                }
+            </script>
+            
+           
+            <p id="note" class="text-danger"> </p>
+              
+
+            <div class="form-group">
+                <label for="inputamount" class="form-label">Description</label>
+                <input type="text" class="form-control" name="description" id="inputamount" />
+            </div>
+
+            <ul class="amount-list">
+                <li>
+                    Total Amount to Pay
+                </li>
+                <li>
+                    <div class="amount" id="total-to-pay">$0.00</div>
+                </li>
+                
+            </ul>
+            <button type="submit" class="btn theme-btn w-100">Next</button>
+        </form>
+    </div>
+</section>
+<!-- transfer details section end -->
+
+
+
+{% endblock content %}
+

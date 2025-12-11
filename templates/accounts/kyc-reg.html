@@ -1,0 +1,187 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+    <!-- header starts -->
+    <div class="auth-header">
+        <a href="{% url 'account:dashboard' %}"> <i class="back-btn" data-feather="arrow-left"></i> </a>
+
+        <img class="img-fluid img" src="{% static 'assets/images/authentication/1.svg' %}" alt="v1" />
+
+        <div class="auth-content">
+            <div>
+                <h2>KYC (Know Your Customer) </h2>
+                <h4 class="p-0">Please Complete this KYC Form</h4>
+            </div>
+        </div>
+    </div>
+    <!-- header end -->
+
+
+    <form class="auth-form" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- my account section start -->
+        <section class="section-b-space">
+            <div class="custom-container">
+                <div class="profile-section">
+                    <div class=" ">
+                        <div class="profile-image d-flex justify-content-center">
+                            
+                            {% if kyc.signature %}
+                                <img class="img-fluid " src="{{ kyc.image.url }}" width="200" alt="ava" />
+
+                            {% else %}
+                                <img class="img-fluid " src="{% static 'assets/avatar.png' %}" width="200" alt="ava" />
+
+                            {% endif %}
+
+                            <!-- <i class="camera" data-feather="camera"></i> -->
+                        </div>
+                    </div>
+                    <h1 class="text-center text-capitalize mt-3">{{user.username}}</h1>
+                    <h5 class="text-center text-capitalize text-danger"> {{ request.user.account.account_status }} </h5>
+                </div>
+                <!-- <img src="" alt="alt" srcset=""> -->
+
+            </div>
+        </section>
+        <!-- my account section end -->
+
+
+        <div class="custom-container">
+
+            <div class="form-group">
+                <label for="inputusername" class="form-label">Full Name</label>
+                <div class="form-input">
+                    <!-- <input type="text" class="form-control" id="inputusername" placeholder="Enter Your Full Name" /> -->
+                    {{form.image}}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputusername" class="form-label">Full Name</label>
+                <div class="form-input">
+                    <!-- <input type="text" class="form-control" id="inputusername" placeholder="Enter Your Full Name" /> -->
+                    {{form.full_name}}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="inputusername" class="form-label">Email </label>
+                <div class="form-input">
+                    <input type="text" value="{{user.email}}" class="form-control" id="inputusername" readonly placeholder="Enter Your Email" />
+                </div>
+            </div>
+
+            
+            <div class="form-group">
+                <label for="inputusername" class="form-label">Country</label>
+                <div class="form-input">
+                    <!-- <input type="text" class="form-control" id="inputusername" placeholder="Enter Your Email" /> -->
+                    {{form.country}}
+                    
+                </div>
+            </div>
+
+            
+            <div class="form-group">
+                <label for="inputusername" class="form-label">State</label>
+                <div class="form-input">
+                    <!-- <input type="text" class="form-control" id="inputusername" placeholder="Enter Your Email" /> -->
+                    {{form.state}}
+                </div>
+            </div>
+
+            
+            <div class="form-group">
+                <label for="inputusername" class="form-label">City</label>
+                <div class="form-input">
+                    <!-- <input type="text" class="form-control" id="inputusername" placeholder="Enter Your Email" /> -->
+                    {{form.city}}
+                </div>
+            </div>
+
+            
+            <div class="form-group">
+                <label for="inputusername" class="form-label">Fax</label>
+                <div class="form-input">
+                    <!-- <input type="text" class="form-control" id="inputusername" placeholder="Enter Your Email" /> -->
+                    {{form.fax}}
+                </div>
+            </div>
+
+            
+            <div class="form-group">
+                <label for="inputusername" class="form-label">Telephone</label>
+                <div class="form-input">
+                    <!-- <input type="text" class="form-control" id="inputusername" placeholder="Enter Your Email" /> -->
+                    {{form.mobile}}
+                </div>
+            </div>
+
+            
+            <div class="form-group">
+                <label for="inputusername" class="form-label">Date of Birth</label>
+                <div class="form-input">
+                    <!-- <input type="text" class="form-control" id="inputusername" placeholder="Enter Your Email" /> -->
+                    {{form.date_of_birth}}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputusername" class="form-label">Gender</label>
+                <div class="form-input">
+                    <!-- <input type="text" class="form-control" id="inputusername" placeholder="Enter Your Email" /> -->
+                    {{form.gender}}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputusername" class="form-label">Marital Status</label>
+                <div class="form-input">
+                    <!-- <input type="text" class="form-control" id="inputusername" placeholder="Enter Your Email" /> -->
+                    {{form.marrital_status}}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputusername" class="form-label">Type of Identity</label>
+                <div class="form-input">
+                    <!-- <input type="text" class="form-control" id="inputusername" placeholder="Enter Your Email" /> -->
+                    {{form.identity_type}}
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="inputgender" class="form-label">Select Identity Image</label>
+                {{form.identity_image}}
+                
+                {% if kyc.identity_image %}
+                    <img src="{{ kyc.identity_image.url }}" style="width: 100%; height: 200px; border-radius: 10px; object-fit: cover; padding-top: 10px;" alt="">
+                {% endif %}
+                    
+            </div>
+
+
+            <div class="form-group">
+                <label for="inputgender" class="form-label">Select Signature Image</label>
+                {{form.signature}}
+                
+                {% if kyc.signature %}
+                    <img src="{{ kyc.identity_image.url }}" style="width: 100%; height: 200px; border-radius: 10px; object-fit: cover; padding-top: 10px;" alt="">
+                {% endif %}
+                
+            </div>
+
+            <button type="submit" class="btn theme-btn w-100">Submit KYC</button>
+        </div>
+    </form>
+    
+{% endblock content %}
+    
+
+

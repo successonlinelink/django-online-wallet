@@ -1,0 +1,293 @@
+{% extends 'partials/base.html' %} 
+{% load static %} 
+
+{% block content %}
+
+<!-- header start -->
+<header class="section-t-space">
+    <div class="custom-container">
+        <div class="header-panel">
+            <a href="{% url 'account:dashboard' %}" class="back-btn">
+                <i class="icon" data-feather="arrow-left"></i>
+            </a>
+            <h2> ({{ notifications.count }}) Notifications </h2>
+
+            <!-- <div class="dropdown">
+                <a href="#" class="back-btn" role="button" data-bs-toggle="dropdown">
+                    <i class="icon" data-feather="settings"></i>
+                </a>
+
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Mute notification</a></li>
+                    <li><a class="dropdown-item" href="#">Mark as all read</a></li>
+                    <li><a class="dropdown-item" href="#">Remove all</a></li>
+                </ul>
+            </div> -->
+        </div>
+    </div>
+</header>
+<!-- header end -->
+
+<!-- notification section starts -->
+<section class="section-b-space">
+    <div class="custom-container">
+        <ul class="notification-list">
+
+            {% for n in notifications %}
+                <li class="notification-box">
+                    <a href="#">
+
+                        <!-- START -->
+                        {% if n.notification_type == "payment_received" %}
+                        <div class="">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="fw-semibold dark-text">{{ n.sender.kyc.full_name }}</h5>
+                                </div>
+                                <h6 class="time fw-normal light-text">
+                                    <small>{{ n.date|date:"h:i" }}</small> | {{ n.date|date:"d M, Y" }}
+                                </h6>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <h5 class="light-text fw-normal">
+                                    Payment Request Received from <span class="fw-semibold dark-text">{{ n.sender.kyc.full_name }}</span>
+                                </h5>
+                                <span class="theme-color fw-semibold">${{ n.amount }}</span>
+                            </div>
+                        </div>
+
+                        {% elif n.notification_type == "payment_sent" %}
+                        <div class="">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="fw-semibold dark-text">{{ n.user.kyc.full_name }}</h5>
+                                </div>
+                                <h6 class="time fw-normal light-text">
+                                    <small>{{ n.date|date:"h:i" }}</small> | {{ n.date|date:"d M, Y" }}
+                                </h6>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <h5 class="light-text fw-normal">
+                                    You sent a Payment Request.
+                                </h5>
+                                <span class="theme-color fw-semibold">${{ n.amount }}</span>
+                            </div>
+                        </div>
+
+                        {% elif n.notification_type == "money_sent" %}
+                        <div class="">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="fw-semibold dark-text">{{ n.user.kyc.full_name }}</h5>
+                                </div>
+                                <h6 class="time fw-normal light-text">
+                                    <small>{{ n.date|date:"h:i" }}</small> | {{ n.date|date:"d M, Y" }}
+                                </h6>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <h5 class="light-text fw-normal">
+                                    You transferred
+                                </h5>
+                                <span class="theme-color fw-semibold">${{ n.amount }}</span>
+                            </div>
+                        </div>
+
+                        {% elif n.notification_type == "money_received" %}
+                        <div class="">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="fw-semibold dark-text">{{ n.sender.kyc.full_name }}</h5>
+                                </div>
+                                <h6 class="time fw-normal light-text">
+                                    <small>{{ n.date|date:"h:i" }}</small> | {{ n.date|date:"d M, Y" }}
+                                </h6>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <h5 class="light-text fw-normal">
+                                    You received money from <span class="fw-semibold dark-text">{{ n.sender.kyc.full_name }}</span>.
+                                </h5>
+                                <span class="fw-semibold theme-color">${{ n.amount }}</span>
+                            </div>
+                        </div>
+
+                        {% elif n.notification_type == "security_alert" %}
+                        <div>
+                            <h5 class="fw-semibold dark-text">Security Alert Notification</h5>
+                            <h6 class="time fw-normal light-text">
+                                <small>{{ n.date|date:"h:i" }}</small> | {{ n.date|date:"d M, Y" }}
+                            </h6>
+
+                            <div class="mt-3">
+                                <h5 class="light-text fw-normal">You just logged into your account.</h5>
+                            </div>
+                        </div>
+
+                        {% elif n.notification_type == "credit_card" %}
+                        <div class="">
+                            <h5 class="fw-semibold dark-text">Credit Card Notification</h5>
+                            <h6 class="time fw-normal light-text">
+                                <small>{{ n.date|date:"h:i" }}</small> | {{ n.date|date:"d M, Y" }}
+                            </h6>
+
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <h5 class="light-text fw-normal">You have used your credit card.</h5>
+                                <span class="fw-semibold theme-color">${{ n.amount }}</span>
+                            </div>
+                        </div>
+
+                        {% elif n.notification_type == "credit_alert" %}
+                        <div class="">
+                            <h5 class="fw-semibold dark-text">Credit Alert Notification</h5>
+
+                            <h6 class="time fw-normal light-text">
+                                <small>{{ n.date|date:"h:i" }}</small> | {{ n.date|date:"d M, Y" }}
+                            </h6>
+
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <h5 class="light-text fw-normal">
+                                    <span class="fw-semibold theme-color">+${{ n.amount }}</span> has been added to your account.
+                                </h5>
+                            </div>
+                        </div>
+
+                        {% elif n.notification_type == "debit_alert" %}
+                        <div class="">
+                            <h5 class="fw-semibold dark-text">Debit Alert Notification</h5>
+
+                            <h6 class="time fw-normal light-text">
+                                <small>{{ n.date|date:"h:i" }}</small> | {{ n.date|date:"d M, Y" }}
+                            </h6>
+
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <h5 class="light-text fw-normal">
+                                    <span class="fw-semibold theme-color">-${{ n.amount }}</span> was deducted from your account.
+                                </h5>
+                            </div>
+                        </div>
+
+                        {# ---------------------------- GOALS ----------------------------- #}
+
+                        {% elif n.notification_type == "Goal Created" %}
+                        <div>
+                            <h5 class="fw-semibold dark-text">{{ n.user.kyc.full_name }}</h5>
+                            <h6 class="time fw-normal light-text">
+                                <small>{{ n.date|date:"h:i" }}</small> | {{ n.date|date:"d M, Y" }}
+                            </h6>
+
+                            <div class="mt-3">
+                                <h5 class="light-text fw-normal">You created a new goal.</h5>
+                            </div>
+                        </div>
+
+                        {% elif n.notification_type == "Goal Updated" %}
+                        <div>
+                            <h5 class="fw-semibold dark-text">{{ n.user.kyc.full_name }}</h5>
+                            <h6 class="time fw-normal light-text">
+                                <small>{{ n.date|date:"h:i" }}</small> | {{ n.date|date:"d M, Y" }}
+                            </h6>
+
+                            <div class="mt-3">
+                                <h5 class="light-text fw-normal">You updated your goal.</h5>
+                            </div>
+                        </div>
+
+                        {% elif n.notification_type == "Goal Completed" %}
+                        <div>
+                            <h5 class="fw-semibold dark-text">{{ n.user.kyc.full_name }}</h5>
+                            <h6 class="time fw-normal light-text">
+                                <small>{{ n.date|date:"h:i" }}</small> | {{ n.date|date:"d M, Y" }}
+                            </h6>
+
+                            <div class="mt-3">
+                                <h5 class="light-text fw-normal">🎉 Your savings goal has been completed.</h5>
+                            </div>
+                        </div>
+
+                        {% elif n.notification_type == "Goal Deleted" %}
+                        <div>
+                            <h5 class="fw-semibold dark-text">{{ n.user.kyc.full_name }}</h5>
+                            <h6 class="time fw-normal light-text">
+                                <small>{{ n.date|date:"h:i" }}</small> | {{ n.date|date:"d M, Y" }}
+                            </h6>
+
+                            <div class="mt-3">
+                                <h5 class="light-text fw-normal">You deleted a goal.</h5>
+                            </div>
+                        </div>
+
+                        {% elif n.notification_type == "Goal Amount Added" %}
+                        <div>
+                            <h5 class="fw-semibold dark-text">{{ n.user.kyc.full_name }}</h5>
+                            <h6 class="time fw-normal light-text">
+                                <small>{{ n.date|date:"h:i" }}</small> | {{ n.date|date:"d M, Y" }}
+                            </h6>
+
+                            <div class="mt-3 d-flex justify-content-between align-items-center">
+                                <h5 class="light-text fw-normal">
+                                    You funded your goal.
+                                </h5>
+                                <span class="fw-semibold theme-color">${{ n.amount }}</span>
+                            </div>
+                        </div>
+
+                        {# ---------------------------- LOANS ----------------------------- #}
+
+                        {% elif n.notification_type == "Loan Request Under Review" %}
+                        <div>
+                            <h5 class="fw-semibold dark-text">Loan Department</h5>
+                            <h6 class="time fw-normal light-text"><small>{{ n.date|date:"h:i" }}</small> | {{ n.date|date:"d M, Y" }}</h6>
+
+                            <div class="mt-3">
+                                <h5 class="light-text fw-normal">Your loan request is under review.</h5>
+                            </div>
+                        </div>
+
+                        {% elif n.notification_type == "Loan Request Accepted" %}
+                        <div>
+                            <h5 class="fw-semibold dark-text">Loan Department</h5>
+                            <h6 class="time fw-normal light-text"><small>{{ n.date|date:"h:i" }}</small> | {{ n.date|date:"d M, Y" }}</h6>
+
+                            <div class="mt-3">
+                                <h5 class="light-text fw-normal">Your loan request has been approved.</h5>
+                            </div>
+                        </div>
+
+                        {% elif n.notification_type == "Loan Request Rejected" %}
+                        <div>
+                            <h5 class="fw-semibold dark-text">Loan Department</h5>
+                            <h6 class="time fw-normal light-text"><small>{{ n.date|date:"h:i" }}</small> | {{ n.date|date:"d M, Y" }}</h6>
+
+                            <div class="mt-3">
+                                <h5 class="light-text fw-normal">Your loan request was rejected.</h5>
+                            </div>
+                        </div>
+
+                        {% elif n.notification_type == "Loan Request Disbursed" %}
+                        <div>
+                            <h5 class="fw-semibold dark-text">Loan Department</h5>
+                            <h6 class="time fw-normal light-text"><small>{{ n.date|date:"h:i" }}</small> | {{ n.date|date:"d M, Y" }}</h6>
+
+                            <div class="mt-3">
+                                <h5 class="light-text fw-normal">Your loan amount has been disbursed.</h5>
+                            </div>
+                        </div>
+
+                        {% endif %}
+                        <!-- END -->
+
+                    </a>
+                </li>
+            {% endfor %}
+
+        </ul>
+    </div>
+</section>
+
+<!-- notification section end -->
+
+
+{% endblock content %}

@@ -1,0 +1,34 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="auth-header">
+    <div class="auth-content">
+        <div>
+            <h2>Your Account was Created Successfully!</h2>
+            <h4 class="p-0">Hurray ! Your info was submitted</h4>
+        </div>
+    </div>
+</div>
+<!-- header end -->
+
+<!-- login section start -->
+<div class="auth-form">
+    <div class="custom-container">
+        <div class="form-group">
+            <h5>Hi {{request.user}}</h5>
+            <h5>Details of your registration has been sent to your Email: &nbsp; <span class="text-success">{{user.email}}</span></h5>
+            <h5>Enjoy managing your money getting directed now that the account has been successfully leveraged.</h5>
+
+            <div class="successfull-img text-center">
+                <img class="img-fluid img" src="{% static 'assets/images/authentication/5.svg' %}" alt="v1" />
+            </div>
+        </div>
+
+        <a href="/" class="btn theme-btn w-100">Go to home</a>
+    </div>
+</div>
+
+{% endblock content %}

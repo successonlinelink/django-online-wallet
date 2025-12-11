@@ -1,0 +1,76 @@
+{% load static %} 
+{% load humanize %}
+
+    <div class="offcanvas-header sidebar-header">
+        <div class="sidebar-logo">
+            <img class="img-fluid logo" src="{% static 'assets/images/logo/logo.png' %}" alt="logo" />
+        </div>
+        <div class="balance">
+            <img class="img-fluid balance-bg" src="{% static 'assets/images/background/auth-bg.jpg' %}" alt="auth-bg" />
+            <h5>Balance</h5>
+            <h2>${{account.account_balance|intcomma}}</h2>
+        </div>
+    </div>
+
+    <div class="offcanvas-body">
+        <div class="sidebar-content">
+            <ul class="link-section">
+                <li>
+                    <a href="{% url 'account:dashboard' %}" class="pages">
+                        <i class="sidebar-icon" data-feather="command"></i>
+                        <h3>Dashboard</h3>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'account:account' %}" class="pages">
+                        <i class="sidebar-icon" data-feather="user"></i>
+                        <h3>Account</h3>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'core:credit_cards' %}" class="pages">
+                        <i class="sidebar-icon" data-feather="credit-card"></i>
+                        <h3>Cards</h3>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'core:goal' %}" class="pages">
+                        <!-- <i class="sidebar-icon" data-feather="file-text"></i> -->
+                        <i class="fa fa-bank" style="font-size:20px;color:rgb(23, 23, 23)"></i>
+                        <h3>Goals</h3>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'core:loan-history' %}" class="pages">
+                        <!-- <i class="sidebar-icon" data-feather="file-text"></i> -->
+                        <i class="fa fa-cubes" style="font-size:20px;color:rgb(23, 23, 23)"></i>
+                        <h3>Loan</h3>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="{% url 'userauths:logout' %}" class="pages">
+                        <i class="sidebar-icon" data-feather="log-out"></i>
+                        <h3>Log out</h3>
+                    </a>
+                </li>
+
+            </ul>
+
+            <div class="mode-switch">
+                <ul class="switch-section">
+                    <li>
+                        <h3>Dark</h3>
+                        <div class="switch-btn">
+                            <input id="dark-switch" type="checkbox" />
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+        

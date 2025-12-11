@@ -1,0 +1,43 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="auth-header">
+    <div class="auth-content">
+        <div>
+            <h2>Account Under Review!</h2>
+            <h4 class="p-0">Your KYC Was sumited.</h4>
+        </div>
+    </div>
+</div>
+<!-- header end -->
+
+<!-- login section start -->
+<div class="auth-form">
+    <div class="custom-container">
+        <div class="form-group">
+            <h5>Hi {{request.user}}</h5>
+           
+            <h5>Your KYC Was sumited Successfully. Email: &nbsp; <span class="text-success">{{user.email}}</span></h5>
+           
+            <h5> Your KYC is under Review and will take 12-24hrs to review your KYC. </h5>
+
+            <h5>  If it takes longer than you expected please call the customer care.</h5>
+
+
+
+            <div class="successfull-img text-center">
+                <img class="img-fluid img" src="{% static 'assets/images/authentication/5.svg' %}" alt="v1" />
+            </div>
+        </div>
+
+        <a href="{% url 'account:dashboard' %}" class="btn theme-btn w-100">Finish</a>
+    </div>
+</div>
+
+{% endblock content %}
+    
+
+

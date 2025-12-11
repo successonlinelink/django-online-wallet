@@ -1,0 +1,213 @@
+{% extends 'partials/base.html' %} 
+{% load static %} 
+{% load humanize %}
+
+{% block content %}
+
+    <!-- bottom navbar start -->
+    {% include 'home_i/footer_nav.html' %}
+    <!-- bottom navbar end -->
+
+    <!-- header start -->
+    <header class="section-t-space">
+        <div class="custom-container">
+            <div class="header-panel">
+                <a href="{{ request.META.HTTP_REFERER|default:'account:dashboard' }}" class="back-btn">
+                    <i class="icon" data-feather="arrow-left"></i>
+                </a>
+                <h2>Transfer Confirmation </h2>
+            </div>
+        </div>
+    </header>
+    <!-- header end -->
+
+    <!-- transfer-list starts -->
+    <section>
+        <ul class="transfer-list add-transfer-person">
+            <li class="w-100">
+                <div class="transfer-person transfer-box">
+                    <div class="transfer-img">
+                        
+                        {% if account.kyc %}
+                            <img class="img-fluid icon" src="{{account.user.kyc.image.url}}" alt="p1" />
+                        
+                        {% else %}
+                            <img class="img-fluid " src="{% static 'assets/avatar.png' %}" width="100" alt="ava" />
+                            
+                        {% endif %}
+                            
+                    </div>
+
+                    <div class="transfer-details">
+                        <div>
+                            <h5 class="fw-semibold dark-text"> {{account.user.kyc.full_name|title|default:'No KYC'}} </h5>
+                            <h6 class="fw-normal light-text mt-2"> {{account.account_number}} </h6>
+                        </div>
+                        <div class="dropdown">
+                            <a href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="icon dark-text" data-feather="more-vertical"></i>
+                            </a>
+
+                            <!-- <ul class="dropdown-menu">
+                                <li><a class="dropdown-item w-100" href=" url 'core:account-holders' ">Change person</a></li>
+                            </ul> -->
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </section>
+    <!-- transfer-list end -->
+
+    <div class="text-center mt-2">
+        <p>Step 3 of 3</p>
+        <p class="text-center mt-2" style="font-size: 13px;">Please Confirm Your Payment</p>
+    </div>
+                
+    <!-- transfer details section start -->
+    <section class="section-b-space">
+        <div class="custom-container">
+
+            <form class="auth-form p-0" method="POST" >
+                {% csrf_token %}
+
+                    <div class="pay-modal" id="paid" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2 class="modal-title">Recipient Details</h2>
+                                </div>
+                                <div class="modal-body">
+                                    <ul class="details-list">
+                                        <li>
+                                            <h3 class="fw-normal dark-text">Amount to send</h3>
+                                            <h3 class="fw-semibold theme-color">${{transaction.amount}}</h3>
+                                        </li>
+                                        <li>
+                                            <h3 class="fw-normal dark-text">Email</h3>
+                                            <h3 class="fw-normal light-text">{{account.user.email}}</h3>
+                                        </li>
+                                        <li>
+                                            <h3 class="fw-normal dark-text">Description</h3>
+                                            <h3 class="fw-normal light-text">{{transaction.description}}</h3>
+                                        </li>
+                                        <li>
+                                            <h3 class="fw-normal dark-text">Mobile</h3>
+                                            <h3 class="fw-normal light-text">{{account.user.kyc.mobile}}</h3>
+                                        </li>
+                                        <li>
+                                            <h3 class="fw-normal dark-text">Date</h3>
+                                            <h3 class="fw-normal light-text">{{transaction.date}}</h3>
+                                        </li>
+                                    </ul>
+                                </div>
+                            
+                            </div>
+                        </div>
+                    </div>
+
+                <script>
+                    function confirmCancel() {
+                        return confirm("Are you sure you want to cancel this transfer?");
+                    }
+                </script>
+
+                <a onclick="return confirmCancel();" 
+                    href="{% url 'core:transfer-cancel' account.account_number transaction.transaction_id %}" 
+                    class="btn btn-danger w-100 mt-3">
+                    Cancel Transfer
+                </a>
+                
+                <!-- Transfer Button -->
+                <a href="#pay" class="btn theme-btn w-100" data-bs-toggle="modal">Transfer</a>
+            </form>
+        </div>
+
+    </section>
+
+    
+    <!-- Enter Pin Modal and Js -->
+    <div class="modal pay-modal fade" id="pay" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            
+            <form action="{% url 'core:transfer-process' account.account_number transaction.transaction_id %}" method="POST" class="modal-content">
+                {% csrf_token %}
+
+                <div class="modal-header">
+                    <h2 class="modal-title">Enter Transaction Pin</h2>
+                </div>
+
+                <div class="modal-body">
+                    <ul class="details-list">
+                        <li class="d-flex justify-content-center">
+                           <div class="pin-container">
+                                <input type="password" maxlength="1" class="pin-input" oninput="moveNext(this)" onkeydown="moveBack(event, this)">
+                                <input type="password" maxlength="1" class="pin-input" oninput="moveNext(this)" onkeydown="moveBack(event, this)">
+                                <input type="password" maxlength="1" class="pin-input" oninput="moveNext(this)" onkeydown="moveBack(event, this)">
+                                <input type="password" maxlength="1" class="pin-input" oninput="moveNext(this)" onkeydown="moveBack(event, this)">
+
+                                <!-- Hidden final PIN value -->
+                                <input type="hidden" name="pin-number" id="pin-number">
+                            </div>
+                        </li>
+                        <li>
+                            <h3 class="text-centerdark-text"> Please put the correct pin to avoid account suspension. </h3>
+                        </li>
+                    </ul>
+                    <button type="submit" class="btn theme-btn successfully w-100">Pay</button>
+                </div>
+
+                <button type="button" class="btn close-btn" data-bs-dismiss="modal">
+                    <i class="icon" data-feather="x"></i>
+                </button>
+
+            </form>
+        </div>
+    </div>
+
+    <style>
+
+        .pin-container { display: flex; gap: 10px; }
+
+        .pin-input { width: 50px; height: 50px; font-size: 25px; text-align: center; border: 2px solid #ddd; border-radius: 10px; outline: none; }
+
+        .pin-input:focus { border-color: #0066ff; }
+
+    </style>
+
+    <script>
+        function moveNext(input) {
+            input.value = input.value.replace(/[^0-9]/g, ""); // allow only digits
+
+            if (input.value.length === 1) {
+                let next = input.nextElementSibling;
+                if (next && next.classList.contains("pin-input")) {
+                    next.focus();
+                }
+            }
+
+            updateFinalPIN();
+        }
+
+        function moveBack(event, input) {
+            if (event.key === "Backspace" && input.value === "") {
+                let prev = input.previousElementSibling;
+                if (prev && prev.classList.contains("pin-input")) {
+                    prev.focus();
+                }
+            }
+
+            updateFinalPIN();
+        }
+
+        function updateFinalPIN() {
+            let inputs = document.querySelectorAll(".pin-input");
+            let pinValue = "";
+            inputs.forEach(i => pinValue += i.value);
+
+            document.getElementById("pin-number").value = pinValue;
+        }
+    </script>
+
+{% endblock content %}
+

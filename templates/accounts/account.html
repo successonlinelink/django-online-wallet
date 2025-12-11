@@ -1,0 +1,150 @@
+{% extends 'partials/base.html' %} 
+{% load static %} 
+
+{% block content %}
+
+<div class="p-2">
+    <a href="{{ request.META.HTTP_REFERER|default:'account:dashboard' }}"> <i class="back-btn" data-feather="arrow-left"></i> </a>
+</div>
+
+  <!-- profile section start -->
+<section class="section-b-space">
+    <div class="custom-container">
+        <div class="profile-section">
+            <div class="profile-banner">
+                <div class=" ">
+
+                     {% if kyc.image %}
+                        <img class="img-fluid " src="{{ kyc.image.url }}" width="100" alt="ava" />
+
+                    {% else %}
+                        <img class="img-fluid " src="{% static 'assets/avatar.png' %}" width="100" alt="ava" />
+
+                    {% endif %}
+
+                </div>
+            </div>
+            <div class="auth-content">
+                <div>
+                    <h2> {{kyc.full_name}} </h2>
+                    
+                    {% if account.account_status == 'in-active' %}
+                        <h5 class="text-center text-capitalize text-danger"> {{ request.user.account.account_status }} </h5>
+
+                    {% elif account.account_status == 'pending' %}
+                        <h5 class="text-center text-capitalize text-info"> {{ request.user.account.account_status }} </h5>
+
+                    {% elif account.account_status == 'active' %}
+                        <h5 class="text-center text-capitalize text-success"> {{ request.user.account.account_status }} </h5>
+                        
+                    {% endif %}
+                        
+                    <h4 class="p-0 text-center mt-2">Acc. No:  {{account.account_number}} </h4>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- profile section end -->
+
+<div class="auth-form" >
+
+    <div class="custom-container">
+
+        <h3>KYC Details</h3>
+
+        <table class="table" style="font-size: 12px;">
+            <tbody>
+                
+                <tr>
+                    <th scope="row">Username</th>
+                    <td class="text-capitalize">{{request.user.username}}</td>
+                </tr>
+                
+                <tr>
+                    <th scope="row">Acc. Email:</th>
+                    <td>{{request.user.email}}</td>
+                </tr>
+
+                <tr>
+                    <th scope="row">Acc. Id:</th>
+                    <td>{{account.account_id}}</td>
+                </tr>
+                
+                <tr>
+                    <th scope="row">Transaction Pin:</th>
+                    <td>{{account.pin_number}}</td>
+                </tr>
+                
+                <tr>
+                    <th scope="row">Mobile</th>
+                    <td>{{kyc.mobile}}</td>
+                </tr>
+
+                <tr>
+                    <th scope="row">State</th>
+                    <td>{{kyc.state}}</td>
+                </tr>
+
+                <tr>                
+                    <th scope="row">Country</th>
+                    <td>{{kyc.country}}</td>
+                </tr>
+
+                <tr>                
+                    <th scope="row">Fax</th>
+                    <td>{{kyc.fax}}</td>
+                </tr>
+                
+                <tr>
+                    <th scope="row">Gender</th>
+                    <td>{{kyc.gender}}</td>
+                </tr>
+                
+                <tr>
+                    <th scope="row">Marital Status</th>
+                    <td>{{kyc.marrital_status}}</td>
+                </tr>  
+                
+                <tr>
+                    <th scope="row">Date of Birth</th>
+                    <td>{{kyc.date_of_birth|date:'d M, Y' }}</td>
+                </tr> 
+
+                <tr>                
+                    <th scope="row">Identity Type</th>
+                    <td>
+                        <span id="strip">
+                            
+                            {% if kyc.identity_type == 'national_id_card' %}
+                                National ID Card
+
+                            {% elif kyc.identity_type == 'drivers_licence' %}
+                                Drives Licence
+
+                            {% elif kyc.international_passport == 'international_passport' %}
+                                International Passport
+
+                            {% endif %}
+                                
+                        </span>
+                    </td>
+                </tr>           
+                
+                <tr>
+                    <th scope="row">Date Joined:</th>
+                    <td>{{account.date}}</td>
+                </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock content %}
+

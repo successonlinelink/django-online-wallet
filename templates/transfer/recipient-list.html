@@ -1,0 +1,102 @@
+{% extends 'partials/base.html' %} 
+{% load static %} 
+
+{% block content %}
+
+    <!-- bottom navbar start -->
+    {% include 'home_i/footer_nav.html' %}
+    <!-- bottom navbar end -->
+
+    <!-- header start -->
+    <header class="section-t-space">
+        <div class="custom-container">
+            <div class="header-panel">
+                <a href="{% url 'account:dashboard' %}" class="back-btn">
+                    <i class="icon" data-feather="arrow-left"></i>
+                </a>
+                <h2>Account Recipients </h2>
+                
+                <a href="{% url 'core:search-account' %}" class="back-btn">
+                    <i class="icon" data-feather="search"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+    <!-- header end -->
+
+    <!-- person list section starts -->
+    <section class="section-b-space">
+        <div class="custom-container">
+            <ul class="transfer-list">
+                
+                {% if recipients %}
+                    {% for r in recipients  %}
+                    
+                        <li class="w-100">
+                            <div class="transfer-box">
+
+                                <a href="{% url 'core:amount-transfer' r.account.account_number  %}">
+
+                                    <div class="transfer-img">
+                                        
+                                        {% if r.recipient_user.kyc.image %}
+                                            <img class="img-fluid " src="{{r.recipient_user.kyc.image.url}}" width="100" alt="ava" style="border-radius: 50%;" />
+
+                                        {% else %}
+                                            <img class="img-fluid " src="{% static 'assets/avatar.png' %}" width="100" alt="ava" style="border-radius: 50%;" />
+                                            
+                                        {% endif %}                                      
+
+                                    </div>
+                                </a>
+
+                                <div class="transfer-details">
+                                    <div>
+                                        <a href="{% url 'core:amount-transfer' r.account.account_number  %}">
+                                            <h5 class="fw-semibold dark-text">{{r.recipient_user.kyc.full_name|title|default:'No KYC'}}</h5>
+                                        </a>
+                                        <h6 class="fw-normal light-text mt-2">{{r.account.account_number}}</h6>
+
+                                    </div>
+                                </div>
+                                    
+                                <form method="post" action="{% url 'core:delete_recipient' r.id %}" style="display: inline;"
+                                    onsubmit="return confirm('Are you sure you want to delete this recipient?');">
+                                    {% csrf_token %}
+                                    
+                                    <button type="submit" class="btn btn-sm text-danger">
+                                        Delete
+                                    </button>
+                                </form>
+                                
+                            </div>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <!-- pay-successfully section starts -->
+                    <section class="section-b-space">
+                        <div class="custom-container">
+                            <div class="empty-page">
+                                <img
+                                    class="notification-img"
+                                    class="img-fluid"
+                                    src="{% static 'assets/images/svg/notification.svg' %}"
+                                    alt="notification"
+                                />
+                                <h3 class="d-block fw-normal dark-text text-center mt-3">
+                                    You don't have any Recipient. Make transaction to add one.
+                                </h3>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- pay-successfully section end -->                         
+                {% endif %}
+                
+            </ul>
+        </div>
+    </section>
+    <!-- person list section end -->
+
+
+{% endblock content %}
+

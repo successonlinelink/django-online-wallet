@@ -1,0 +1,93 @@
+{% extends 'partials/base.html' %} 
+{% load static %} 
+{% load humanize %}
+
+{% block content %}
+
+    <!-- bottom navbar start -->
+    {% include 'home_i/footer_nav.html' %}
+    <!-- bottom navbar end -->
+
+    <!-- header start -->
+<header class="section-t-space">
+    <div class="custom-container">
+        <div class="header-panel">
+            <a href="{{ request.META.HTTP_REFERER|default:'account:dashboard' }}" class="back-btn">
+                <i class="icon" data-feather="arrow-left"></i>
+            </a>
+            <h2>Transfer money to </h2>
+        </div>
+    </div>
+</header>
+<!-- header end -->
+
+<!-- transfer-list starts -->
+<section>
+    <ul class="transfer-list add-transfer-person">
+        <li class="w-100">
+            <div class="transfer-person transfer-box">
+                <div class="transfer-img">
+                    
+                    {% if account.kyc %}
+                        <img class="img-fluid icon" src="{{account.user.kyc.image.url}}" alt="p1" />
+                    
+                    {% else %}
+                        <img class="img-fluid " src="{% static 'assets/avatar.png' %}" width="100" alt="ava" />
+                        
+                    {% endif %}
+                        
+                </div>
+
+                <div class="transfer-details">
+                    <div>
+                        <h5 class="fw-semibold dark-text"> {{account.user.kyc.full_name|title|default:'No KYC'}} </h5>
+                        <h6 class="fw-normal light-text mt-2"> {{account.account_number}} </h6>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="icon dark-text" data-feather="more-vertical"></i>
+                        </a>
+
+                        <!-- <ul class="dropdown-menu">
+                            <li><a class="dropdown-item w-100" href=" url 'core:account-holders' ">Change person</a></li>
+                        </ul> -->
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</section>
+<!-- transfer-list end -->
+
+<p class="text-center mt-2">
+    Step 2 of 3
+</p>
+<!-- transfer details section start -->
+<section class="section-b-space">
+    <div class="custom-container">
+
+        <form class="auth-form p-0" method="POST" action="{% url 'core:amount-request-proccess' account.account_number  %}">
+            {% csrf_token %}
+
+            <div class="form-group mb-2">
+                <label for="inputcardnumber" class="form-label">Amount to Request</label>
+                <div class="form-input">
+                    <input type="number" class="form-control" name="amount-request" id="amount-send" placeholder="How much you want to Request" required  />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputamount" class="form-label">Description</label>
+                <input type="text" class="form-control" name="description" id="inputamount" placeholder="Request Description" />
+            </div>
+
+            <button type="submit" class="btn theme-btn w-100">Next</button>
+        </form>
+    </div>
+</section>
+<!-- transfer details section end -->
+
+
+
+{% endblock content %}
+

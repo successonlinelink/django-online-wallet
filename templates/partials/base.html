@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+    <!-- Header CSS and Other Scripts -->
+    {% include 'h_f/header_css.html' %}
+
+    <body class="auth-body">
+
+        
+        {% block content %}
+
+            
+        {% endblock content %}
+
+        <!-- Django Alert Messages -->
+        {% include 'a_m/alerts.html' %}
+
+        <!-- side bar start -->
+        <div class="offcanvas sidebar-offcanvas offcanvas-start" tabindex="-1" id="offcanvasLeft">
+            {% include 'home_i/sidebar.html' %}
+        </div>
+        <!-- side bar end -->
+         
+        <!-- Footer Scripts -->
+         <!-- include 'modals/.html'  -->
+        
+        <!-- Footer Scripts -->
+        {% include 'h_f/footer_scripts.html' %}
+    </body>
+</html>

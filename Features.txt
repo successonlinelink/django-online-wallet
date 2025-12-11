@@ -1,0 +1,191 @@
+===============================
+🔥 FULL FEATURE LIST (BACKEND)
+===============================
+
+====================================
+1. USER ACCOUNT SYSTEM
+====================================
+• Automatic account creation using Django signals  
+• Unique Account Number (prefix "0")  
+• Unique Account ID (prefix "TIN")  
+• PIN number auto-generated  
+• Red Code auto-generated  
+• Account balance stored and updated  
+• Account status system:
+    - Active
+    - Pending
+    - In-active  
+• Recommended / Referral system  
+• KYC link to account  
+• KYC status flags:
+    - kyc_submitted
+    - kyc_confirmed  
+
+====================================
+2. KYC (USER VERIFICATION)
+====================================
+• One-to-one with User  
+• Full name, Image, Signature  
+• Gender, Marital Status  
+• Identity type + Identity Upload  
+• Date of Birth  
+• Country, State, City  
+• Contact details (mobile, fax)  
+• KYC submitted & verified tracking  
+
+====================================
+3. TRANSACTION SYSTEM
+====================================
+• Unique Transaction ID (Prefix "TRN")  
+• Transaction types:
+    - transfer
+    - received
+    - withdraw
+    - refund
+    - request
+    - none
+
+• Transaction status:
+    - failed
+    - completed
+    - pending
+    - processing
+    - request_sent
+    - request_processing
+    - request_settled
+
+• Sender + Receiver as Users  
+• Sender Account + Receiver Account  
+• Description field  
+• Amount tracking  
+• Automatic timestamping  
+• Update timestamp  
+
+====================================
+4. CREDIT CARD SYSTEM
+====================================
+• Unique Credit Card ID (prefix "TINCARD")  
+• Auto-generated:
+    - CVV (3 digits)
+    - Card number (16 digits)
+
+• Auto-expiry assignment (4 years from creation)  
+• Card types:
+    - Verve
+    - MasterCard
+    - Visa
+
+• Card balance  
+• Card activation status  
+• Expiry date property (MM/YY format)  
+
+====================================
+5. SAVINGS GOALS (TARGET SAVING)
+====================================
+• Unique Goal ID (prefix "TINGOAL")  
+• Title + Description  
+• Goal Types:
+    - Savings
+    - Investment
+    - Emergency
+    - Travel
+    - Education
+    - Business
+
+• Image upload  
+• Target amount  
+• Current amount  
+• Deadline  
+• Progress percentage property  
+• is_completed property  
+• Automatic sorting by latest  
+
+====================================
+6. RECIPIENT SYSTEM
+====================================
+• Unique Recipient ID (prefix "TINREC")  
+• Save beneficiaries for quick transfer  
+• A user cannot save a recipient twice (unique_together)  
+• Nickname support  
+• Recipient + account stored  
+• Auto-sort latest saved  
+
+====================================
+7. LOAN SYSTEM
+====================================
+• Unique Loan ID (prefix "LOAN")  
+• Loan request amount  
+• Amount disbursed  
+• Purpose  
+• Interest rate  
+• Duration in months  
+• Loan statuses:
+    - under_review
+    - approved
+    - rejected
+    - disbursed
+    - completed
+
+• Linked to user account  
+• total_payable property (interest calculation included)  
+• Timestamps: requested, updated, disbursed  
+
+====================================
+8. NOTIFICATION SYSTEM
+====================================
+• Unique Notification ID  
+• Notification types include:
+    - Transfer
+    - Credit Alert
+    - Debit Alert
+    - Sent Payment Request
+    - Received Payment Request
+    - Transfer Cancelled
+    - Credit Card funded/withdrawn
+    - Credit card added/deleted
+
+    **GOAL NOTIFICATIONS**
+    - Goal Created
+    - Goal Updated
+    - Goal Completed
+    - Goal Deleted
+    - Goal Amount Added
+
+    **LOAN NOTIFICATIONS**
+    - Loan Request Under Review
+    - Loan Request Accepted
+    - Loan Request Rejected
+    - Loan Request Disbursed
+
+• Sender + Receiver optional  
+• Amount optional  
+• Read/unread tracking  
+• Auto timestamp  
+• Sorted newest-first  
+
+====================================
+9. SIGNALS (AUTO ACCOUNT CREATION)
+====================================
+• When a user registers:
+    - Create Account automatically
+    - Save Account automatically
+
+====================================
+🔥 SUMMARY
+====================================
+This project includes:
+✓ Digital Wallet  
+✓ Bank Account Management  
+✓ KYC System  
+✓ Transfers  
+✓ Payment Requests  
+✓ Credit Alerts / Debit Alerts  
+✓ Savings Goals System  
+✓ Beneficiary System  
+✓ Credit Card System  
+✓ Loan Management  
+✓ Notification Center  
+✓ Referral System  
+✓ Automatic Account Creation
+
+Etc.

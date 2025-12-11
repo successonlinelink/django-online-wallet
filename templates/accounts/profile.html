@@ -1,0 +1,121 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+
+{% block content %}
+    {% include 'home_i/footer_nav.html' %}
+    
+    <!-- header start -->
+    <header class="section-t-space">
+        <div class="custom-container">
+            <div class="header-panel">
+                <h2>Profile</h2>
+            </div>
+        </div>
+    </header>
+    <!-- header end -->
+
+    <!-- profile section start -->
+    <section class="section-b-space">
+        <div class="custom-container">
+            <div class="profile-section">
+
+                {% if kyc.signature %}
+                    <div class="profile-banner">
+                        <div class="profile-image">
+                            <img class="img-fluid profile-pic" src="{{ kyc.image.url }}" width="200" alt="ava" />
+                        </div>
+                    </div>
+                    
+
+                {% else %}
+                    <div class="profile-banner">
+                        <div class="profile-image">
+                            <!-- <img class="img-fluid profile-pic" src="{% static 'assets/images/person/p3.png' %}" alt="p3" /> -->
+                            <img class="img-fluid profile-pic" src="{% static 'assets/avatar.png' %}" width="200" alt="ava" />
+                        </div>
+                    </div>
+                    <!-- <img class="img-fluid profile-pic" src="{% static 'assets/avatar.png' %}" width="200" alt="ava" /> -->
+
+                {% endif %}
+
+                <h2>{{user.kyc.full_name|default:'KYC'}}</h2>
+                <h5>{{account.account_number}}</h5>
+            </div>
+
+            <ul class="profile-list">
+                <li>
+                    <a href="{% url 'account:account' %}" class="profile-box">
+                        <div class="profile-img">
+                            <i class="icon" data-feather="user"></i>
+                        </div>
+                        <div class="profile-details">
+                            <h4>My Account</h4>
+                            <img class="img-fluid arrow" src="{% static 'assets/images/svg/arrow.svg' %}" alt="arrow" />
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'core:credit_cards' %}" class="profile-box">
+                        <div class="profile-img">
+                            <i class="icon" data-feather="credit-card"></i>
+                        </div>
+                        <div class="profile-details">
+                            <h4>My Cards</h4>
+                            <img class="img-fluid arrow" src="{% static 'assets/images/svg/arrow.svg' %}" alt="arrow" />
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" class="profile-box">
+                        <div class="profile-img">
+                            <i class="icon" data-feather="settings"></i>
+                        </div>
+                        <div class="profile-details">
+                            <h4>Change Password</h4>
+                            <img class="img-fluid arrow" src="{% static 'assets/images/svg/arrow.svg' %}" alt="arrow" />
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" class="profile-box">
+                        <div class="profile-img">
+                            <i class="icon" data-feather="lock"></i>
+                        </div>
+                        <div class="profile-details">
+                            <h4>Settings</h4>
+                            <img class="img-fluid arrow" src="{% static 'assets/images/svg/arrow.svg' %}" alt="arrow" />
+                        </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="javascript:void(0)" class="profile-box">
+                        <div class="profile-img">
+                            <i class="icon" data-feather="help-circle"></i>
+                        </div>
+                        <div class="profile-details">
+                            <h4>Help Center</h4>
+                            <img class="img-fluid arrow" src="{% static 'assets/images/svg/arrow.svg' %}" alt="arrow" />
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'userauths:logout' %}" class="profile-box">
+                        <div class="profile-img">
+                            <i class="icon" data-feather="log-out"></i>
+                        </div>
+                        <div class="profile-details">
+                            <h4>Log Out</h4>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <!-- profile section end -->
+
+
+
+{% endblock content %}
+

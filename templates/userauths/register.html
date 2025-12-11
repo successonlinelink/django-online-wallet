@@ -1,0 +1,71 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+
+{% block content %}
+    
+    <!-- header starts -->
+    <div class="auth-header">
+        <a href="signin.html"> <i class="back-btn" data-feather="arrow-left"></i> </a>
+
+        <img class="img-fluid img" src="{% static 'assets/images/authentication/6.svg' %}" alt="v1" />
+
+        <div class="auth-content">
+            <div>
+                <h2>Welcome !!</h2>
+                <h4 class="p-0">Fill up the form</h4>
+            </div>
+        </div>
+    </div>
+    <!-- header end -->
+
+    <!-- login section start -->
+    <form class="auth-form" method="POST">
+        {% csrf_token %}
+
+        <div class="custom-container">
+            <div class="form-group">
+                <label for="inputname" class="form-label">Username</label>
+                <div class="form-input">
+                    <!-- <input type="text" class="form-control" id="inputname" placeholder="Enter your name" /> -->
+                    {{form.username}}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputusername" class="form-label">Email</label>
+                <div class="form-input">
+                    <!-- <input type="email" class="form-control" id="inputusername" placeholder="Enter Your Email" /> -->
+                    {{form.email}}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="newpin" class="form-label">Enter Password</label>
+                <div class="form-input">
+                    <!-- <input type="number" class="form-control" id="newpin" placeholder="Enter pin" /> -->
+                    {{form.password1}}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmpin" class="form-label">Confirm Password</label>
+                <div class="form-input">
+                    <!-- <input type="number" class="form-control" id="confirmpin" placeholder="Re-enter pin" /> -->
+                    {{form.password2}}
+                </div>
+            </div>
+            <div class="remember-option mt-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked readonly />
+                    <label class="form-check-label" for="flexCheckDefault">I agree to all terms & condition</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn theme-btn w-100">Sign up</button>
+            <h4 class="signup">Already have an account ?<a href="{% url 'userauths:login' %}"> Sign in</a></h4>
+        </div>
+    </form>
+    <!-- login section start -->
+    
+{% endblock content %}

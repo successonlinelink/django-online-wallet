@@ -1,0 +1,101 @@
+{% extends 'partials/base.html' %} 
+{% load static %} 
+
+{% block content %}
+
+<!-- bottom navbar start -->
+{% include 'home_i/footer_nav.html' %}
+<!-- bottom navbar end -->
+
+<!-- header start -->
+<header class="section-t-space pb-4">
+    <div class="custom-container">
+        <div class="header-panel">
+            <a href="{{ request.META.HTTP_REFERER|default:'account:dashboard' }}" class="back-btn">
+                <i class="icon" data-feather="arrow-left"></i>
+            </a>
+            <h2>Search</h2>
+        </div>
+    </div>
+</header>
+<!-- header end -->
+
+        
+<section class="scan-section section-b-space">
+
+    <!-- person list section starts -->
+    <section class="section-b-space">
+        <div class="custom-container">
+
+            <form class="theme-form mt-3" method="POST">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <div class="form-input">
+                        <input type="text" name="account_number" class="form-control" id="inputusername" placeholder="Search for Account Number or ID..." />
+                        <button type="submit" style="border: none;"><img class="contact-img" src="{% static 'assets/images/svg/contact.svg' %}" alt="search" /></button>
+                        
+                    </div>
+                </div>
+            </form>
+            <ul class="transfer-list">
+
+                
+                {% if query %}
+                
+                    {% for a in account %}
+
+                        <div>Step 1 of 3</div>
+
+                        
+                        <li class="w-100">
+                            <div class="transfer-box">
+
+                                <a href="{% url 'core:amount-request' a.account_number  %}">
+
+                                    <div class="transfer-img">
+                                        
+                                        {% if a.kyc.image %}
+                                            <img class="img-fluid " src="{{a.user.kyc.image.url}}" width="100" alt="ava" />
+
+                                        {% else %}
+                                            <img class="img-fluid " src="{% static 'assets/avatar.png' %}" width="100" alt="ava" />
+                                            
+                                        {% endif %}
+                                            
+
+
+                                    </div>
+                                </a>
+
+                                <div class="transfer-details">
+                                    <div>
+                                        <a href="{% url 'core:amount-request' a.account_number  %}">
+                                            <h5 class="fw-semibold dark-text">{{a.user.kyc.full_name|title|default:'No KYC'}}</h5>
+                                        </a>
+                                        <h6 class="fw-normal light-text mt-2">{{a.account_number}}</h6>
+                                    </div>
+                                    
+                                </div>
+
+                            </div>
+                        </li>
+                    {% empty %}
+                        
+                        <h3>Account Does Not Exist</h3>
+                        
+                    {% endfor %}
+                    
+                {% endif %}
+                    
+                
+            </ul>
+        </div>
+    </section>
+    <!-- person list section end -->
+
+
+</section>
+
+{% endblock content %}
+

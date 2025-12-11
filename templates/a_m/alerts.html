@@ -1,0 +1,80 @@
+{% load static %}
+
+<!-- Alert Messages CSS -->
+<style>
+    /* Overlay background */
+    .message-overlay {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    /* Each message box */
+    .alert-message {
+        padding: 14px 20px;
+        border-radius: 10px;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 500;
+        opacity: 0;
+        transform: translateY(-10px);
+        animation: fadeIn 0.3s forwards;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Different message types */
+    .alert-success { background-color: #28a745; }
+    .alert-error { background-color: #dc3545; }
+    .alert-warning { background-color: #ffc107; color: #333; }
+    .alert-info { background-color: #17a2b8; }
+
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeOut {
+        to {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+    }
+</style>
+
+<!-- Alert Messages Script -->
+<script>
+    // Function to show Django messages as overlay alerts
+    function showOverlayMessages() {
+        const overlay = document.createElement("div");
+        overlay.classList.add("message-overlay");
+        document.body.appendChild(overlay);
+
+        {% if messages %}
+            {% for message in messages %}
+                const msgBox = document.createElement("div");
+                msgBox.classList.add("alert-message", "alert-{{ message.tags }}");
+                msgBox.textContent = "{{ message }}";
+                overlay.appendChild(msgBox);
+
+                // Automatically hide after 3 seconds
+                setTimeout(() => {
+                msgBox.style.animation = "fadeOut 0.3s forwards";
+                setTimeout(() => msgBox.remove(), 300);
+                }, 3000);
+            {% endfor %}
+
+            // Remove overlay if no messages remain
+            setTimeout(() => {
+                if (overlay.children.length === 0) overlay.remove();
+            }, 3500);
+        {% endif %}
+    }
+
+    document.addEventListener("DOMContentLoaded", showOverlayMessages);
+</script>

@@ -1,0 +1,200 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+    {% include 'home_i/footer_nav.html' %}
+
+    <section>
+        <div class="custom-container">
+            <div class="crypto-wallet-box">
+                <div class="card-details">
+                    <div class="d-block w-75">
+                        <h5 class="fw-semibold">Current Balance</h5>
+                        <h2 class="mt-2">${{account.account_balance|intcomma}}</h2>
+                    </div>
+                    <div class="price-difference">
+                        <i class="menu-icon" data-feather="arrow-up"></i>
+                        <h6>Live</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Best Performers (Live Crypto) -->
+    <section>
+        <div class="custom-container">
+            <div class="title">
+                <h2>Best Performers</h2>
+            </div>
+
+            <div class="swiper portfolio">
+                <div class="swiper-wrapper" id="best-performers-wrapper">
+                    <!-- Injected dynamically -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Other Market -->
+    <section>
+        <div class="custom-container">
+            <div class="title">
+                <!-- <h2>Other Market</h2> -->
+            </div>
+
+            <div class="row gy-3" id="other-market-wrapper">
+                <!-- Injected dynamically -->
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Banner -->
+    <!-- <section>
+        <div class="custom-container">
+            <div class="swiper banner">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <a href="javascript:void(0)"><img class="img-fluid banner-img" src="{% static 'assets/images/banner/banner1.png' %}"/></a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="javascript:void(0)"><img class="img-fluid banner-img" src="{% static 'assets/images/banner/banner2.png' %}"/></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+
+    <!-- Live Crypto JS -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false")
+            .then(res => res.json())
+            .then(data => {
+
+                // BEST PERFORMERS (Top 5 biggest gainers)
+                const bestWrapper = document.getElementById("best-performers-wrapper");
+                let topGainers = [...data].sort((a,b) => b.price_change_percentage_24h - a.price_change_percentage_24h).slice(0,5);
+
+                bestWrapper.innerHTML = topGainers.map(coin => `
+                    <div class="swiper-slide">
+                        <div class="portfolio-box">
+                            <a href="javascript:void(0)">
+                                <div class="d-flex align-items-center gap-2 pb-3">
+                                    <div class="portfolio-img">
+                                        <img class="img-fluid img" src="${coin.image}"/>
+                                    </div>
+                                    <div class="portfolio-details">
+                                        <div>
+                                            <h3>${coin.name}</h3>
+                                            <h6 class="${coin.price_change_percentage_24h >= 0 ? 'success-color':'error-color'} fw-normal">
+                                                ${coin.price_change_percentage_24h.toFixed(2)}%
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ul class="currency-amount">
+                                    <li class="light-text">$${coin.current_price.toLocaleString()}</li>
+                                    <li class="dark-text">${coin.price_change_24h.toFixed(2)} <span>(${coin.price_change_percentage_24h.toFixed(2)}%)</span></li>
+                                </ul>
+                            </a>
+                        </div>
+                    </div>
+                `).join("");
+
+
+                // OTHER MARKET (All coins)
+                const marketWrapper = document.getElementById("other-market-wrapper");
+
+                marketWrapper.innerHTML = data.map(coin => `
+                    <div class="col-12">
+                        <div class="transaction-box">
+                            <a class="d-flex gap-3" href="javascript:void(0)">
+                                <div class="transaction-image" style="background:#f0f0f0; border-radius:10px; padding:10px;">
+                                    <img class="img-fluid icon" src="${coin.image}" />
+                                </div>
+                                <div class="transaction-details">
+                                    <div class="transaction-name">
+                                        <h5>${coin.name}</h5>
+                                        <h3 class="dark-text">$${coin.current_price.toLocaleString()}</h3>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="light-text">${coin.symbol.toUpperCase()}</h5>
+                                        <h5 class="${coin.price_change_percentage_24h >= 0 ? 'success-color':'error-color'}">
+                                            ${coin.price_change_percentage_24h.toFixed(2)}% <span class="light-text">(24H)</span>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                `).join("");
+            });
+
+            function fetchCrypto() {
+        fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false")
+        .then(res => res.json())
+        .then(data => {
+
+            // Example: Market Cap Display
+            document.getElementById("other-market-wrapper").innerHTML = data.map(coin => `
+                <div class="col-12">
+                    <div class="transaction-box">
+                        <a class="d-flex gap-3" href="#">
+                            <div class="transaction-image">
+                                <img class="img-fluid icon" src="${coin.image}" />
+                            </div>
+                            <div class="transaction-details">
+                                <div class="transaction-name">
+                                    <h5>${coin.name}</h5>
+                                    <h3 class="dark-text">$${coin.current_price.toLocaleString()}</h3>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="light-text">MC: $${coin.market_cap.toLocaleString()}</h5>
+                                    <h5 class="${coin.price_change_percentage_24h >= 0 ? 'success-color':'error-color'}">
+                                        ${coin.price_change_percentage_24h.toFixed(2)}%
+                                        <span class="light-text">(24H)</span>
+                                    </h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            `).join("");
+        });
+    }
+
+    // Load once
+    fetchCrypto();
+
+    // Refresh every 30 seconds
+    setInterval(fetchCrypto, 30000);
+
+        });
+
+
+    </script>
+    <style>
+        /* Scroll container for Other Market */
+        #other-market-wrapper {
+            max-height: 620px;     /* You can adjust this */
+            overflow-y: scroll;
+            padding-right: 10px;
+        }
+
+        /* Optional: prettier slim scrollbar */
+        #other-market-wrapper::-webkit-scrollbar {
+            width: 6px;
+        }
+        #other-market-wrapper::-webkit-scrollbar-thumb {
+            background: #999;
+            border-radius: 20px;
+        }
+    </style>
+
+{% endblock content %}

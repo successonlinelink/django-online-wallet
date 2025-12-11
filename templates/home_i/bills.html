@@ -1,0 +1,80 @@
+{% load static %}
+
+    <section>
+        <div class="custom-container">
+            <div class="title">
+                <h2>Bills Detail</h2>
+                <a href="bill.html">See all</a>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-3 col-6">
+                    <div class="bill-box">
+                        <div class="d-flex gap-3">
+                            <div class="bill-icon">
+                                <img class="img-fluid icon" src="{% static 'assets/images/svg/6.svg' %}" alt="p6" />
+                            </div>
+                            <div class="bill-details">
+                                <h5 class="dark-text">Airtel</h5>
+                                <h6 class="light-text mt-2">Pre-paid</h6>
+                            </div>
+                        </div>
+                        <div class="bill-price">
+                            <h5>$69.49</h5>
+                            <a href="#pay" data-bs-toggle="modal" class="btn bill-pay bill-paid">Pay</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="bill-box">
+                        <div class="d-flex gap-3">
+                            <div class="bill-icon">
+                                <img class="img-fluid icon" src="{% static 'assets/images/svg/7.svg' %}" alt="p7" />
+                            </div>
+                            <div class="bill-details">
+                                <h5 class="dark-text">Apple</h5>
+                                <h6 class="light-text mt-2">Subscription</h6>
+                            </div>
+                        </div>
+                        <div class="bill-price">
+                            <h5>$49.85</h5>
+                            <a href="#pay" data-bs-toggle="modal" class="btn bill-pay bill-paid">Pay</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="bill-box">
+                        <div class="d-flex gap-3">
+                            <div class="bill-icon">
+                                <img class="img-fluid icon" src="{% static 'assets/images/svg/8.svg' %}" alt="p8" />
+                            </div>
+                            <div class="bill-details">
+                                <h5 class="dark-text">TV</h5>
+                                <h6 class="light-text mt-2">Connection</h6>
+                            </div>
+                        </div>
+                        <div class="bill-price">
+                            <h5>$99.99</h5>
+                            <a href="#pay" data-bs-toggle="modal" class="btn bill-pay bill-paid">Pay</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="bill-box">
+                        <div class="d-flex gap-3">
+                            <div class="bill-icon">
+                                <img class="img-fluid icon" src="{% static 'assets/images/svg/9.svg' %}" alt="p9" />
+                            </div>
+                            <div class="bill-details">
+                                <h5 class="dark-text">Torrent</h5>
+                                <h6 class="light-text mt-2">Electricity</h6>
+                            </div>
+                        </div>
+                        <div class="bill-price">
+                            <h5>$60.49</h5>
+                            <a href="#pay" data-bs-toggle="modal" class="btn bill-pay bill-paid">Pay</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>

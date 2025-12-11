@@ -1,0 +1,184 @@
+{% extends 'partials/base.html' %} 
+{% load static %} 
+{% load humanize %}
+
+{% block content %}
+
+    <!-- header start -->
+    <header class="section-t-space">
+        <div class="custom-container">
+            <div class="header-panel">
+                <a href="{{ request.META.HTTP_REFERER|default:'account:dashboard' }}" class="back-btn">
+                    <i class="icon" data-feather="arrow-left"></i>
+                </a>
+                <h2>My cards</h2>
+
+                <!-- <a href="#add-card" class="back-btn" data-bs-toggle="modal">
+                    <i class="icon" data-feather="plus"></i>
+                </a> -->
+            </div>
+        </div>
+    </header>
+    <!-- header end -->
+
+    <!-- cards section starts -->
+    <section class="section-b-space">
+        <div class="custom-container">
+            <ul class="card-list">
+                
+                <li class="credit-card-box color1">
+                    <div class="card-logo">
+                        <img class="img-fluid logo" src="{% static 'assets/images/logo/logo.png' %}" alt="logo" width="50" />
+
+                        <div class="dropdown">
+
+                            <ul class="" style="color: #fff; font-weight: 600;">
+                                <li><a class="dropdown-item" href="#"><b>{{credit_card.card_type|title}} Card</b></a></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="dropdown">
+                            <a href="#" class="back-btn" role="button" data-bs-toggle="dropdown">
+                                <i class="icon" data-feather="more-horizontal"></i>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#edit-card" data-bs-toggle="modal">Add Funds</a></li>
+                                <li><a class="dropdown-item" href="#add-money" class="add-money theme-color" data-bs-toggle="modal">Withdraw Funds</a></li>
+                                <li><a class="dropdown-item" href="{% url 'core:delete_card' credit_card.card_id %}">Delete Card</a></li>
+
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h5 class="card-number"><b>{{credit_card.number}}</b></h5>
+                            <h5 class="card-name">{{credit_card.user.kyc.full_name|title}}</h5>
+                        </div>
+                        <img class="img-fluid chip" src="{% static 'assets/images/svg/card-chip.svg' %}" alt="card-chip" />
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <h2 class="card-amount">${{credit_card.amount}}</h2>
+                        <div class="card-date w-100">
+                            <h6>Exp. Date</h6>
+                            <h6 class="text-white fw-semibold mt-1">{{credit_card.month}}/{{credit_card.year}}</h6>
+                        </div>
+                        <div class="card-numbers w-100">
+                            <h6 class="cvv-code">Cvv</h6>
+                            <h6 class="text-white fw-semibold mt-1">{{credit_card.cvv}}</h6>
+                        </div>
+                    </div>
+                </li> 
+
+            </ul>
+        </div>
+    </section>
+    <!-- cards section end -->
+
+    <!-- edit card modal starts -->
+    <div class="modal add-money-modal fade" id="edit-card" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <form action="{% url 'core:fund-credit-card' credit_card.card_id %}" method="POST" class="modal-content">
+                {% csrf_token %}
+
+                <div class="modal-header">
+                    <h2 class="modal-title">Add Funds to your ({{credit_card.card_type}}) Card</h2>
+                </div>
+                <div class="modal-body">
+                   
+                    <div class="form-group">
+                        <label for="inputcardnumber" class="form-label">Card Holder Name</label>
+                        <div class="form-input">
+                            <input
+                                type="text"
+                                class="form-control"
+                                value="{{credit_card.user.kyc.full_name}}"
+                                readonly
+                            />
+                        </div>
+                    </div>
+                   
+                    <div class="form-group">
+                        <label for="inputcardnumber" class="form-label">Account Balance</label>
+                        <div class="form-input">
+                            <input
+                                type="text"
+                                class="form-control"
+                                value="${{account.account_balance|intcomma}}"
+                                readonly
+                            />
+                        </div>
+                    </div>
+                   
+                    <div class="form-group">
+                        <label for="inputcardnumber" class="form-label">Card Number</label>
+                        <div class="form-input">
+                            <input
+                                type="text"
+                                class="form-control"
+                                value="{{credit_card.number}}"
+                                readonly
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputcardnumber" class="form-label">Amount to Fund</label>
+                        <div class="form-input">
+                            <input
+                                type="number"
+                                name="funding_amount"
+                                class="form-control"
+                                placeholder="$0.00"
+                            />
+                        </div>
+                    </div>
+                   
+                  
+
+                    <button type="submit" class="btn theme-btn successfully w-100">Confirm Transfer</button>
+                </div>
+                <button type="button" class="btn close-btn" data-bs-dismiss="modal">
+                    <i class="icon" data-feather="x"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    <!-- edit card modal end -->
+
+    <!-- add money modal start -->
+    <div class="modal add-money-modal fade" id="add-money" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <form method="POST" action="{% url 'core:withdraw_fund' credit_card.card_id %}" class="modal-content">
+                {% csrf_token %}
+
+                <div class="modal-header">
+                    <h2 class="modal-title">Withdraw Money</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="inputcard" class="form-label mb-2">Card Available Balance</label>
+                        <div class="d-flex gap-2">
+                            <input type="text" value="${{ credit_card.amount|intcomma }}" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputamount" class="form-label mb-2">Amount</label>
+                        <div class="form-input">
+                            <input type="number" class="form-control" name="amount" placeholder="$0.00" />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn theme-btn successfully w-100">Deposit</button>
+                </div>
+                <button type="button" class="btn close-btn" data-bs-dismiss="modal">
+                    <i class="icon" data-feather="x"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    <!-- add money modal end -->
+
+{% endblock content %}
+
+
